@@ -67,14 +67,14 @@ public class RaycastPointNClick : MonoBehaviour
             
             //X = pitch, Y = Yaw, Z = Roll..set z = 0f to unroll the camera
             //transform.localEulerAngles = new Vector3(verticalAngle, horizontalAngle, 0f);
-            Quaternion target = Quaternion.Euler(verticalAngle,horizontalAngle,daObject.transform.rotation.z);
+            Quaternion target = Quaternion.Euler(daObject.transform.rotation.x,horizontalAngle,verticalAngle);
             daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation,target,smooth);
             }
         }
         else if (!onObject && daObject != null)// lerp the object back
-        { 
+        {
             daObject.transform.position = Vector3.Lerp(daObject.transform.position, objectDefaultPos.transform.position, examineSmooth);
-            daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation,objectDefaultPos.transform.rotation,smooth);
+            daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation, objectDefaultPos.transform.rotation,smooth);
         }
 
         // STEP 1: declare a ray, use mouse's screenspace pixel coordinate
@@ -92,19 +92,20 @@ public class RaycastPointNClick : MonoBehaviour
         // STEP 4: shoot the raycast
 
         if (Physics.Raycast(mouseRay,out rayHit, mouseRayDist)){
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 8){// if the player click on the screen, enter the screen focus position
+            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 8 && !onScreen){// if the player click on the screen, enter the screen focus position
                 onScreen = true;
             }
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 8){// if the player clicks outside the screen, exit the screen focus position
+            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 8 && onScreen){// if the player clicks outside the screen, exit the screen focus position
                 onScreen = false;
             }
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9){
+            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && !onObject){
+                objectDefaultPos.transform.position = rayHit.transform.position;
+                objectDefaultPos.transform.rotation = rayHit.transform.rotation;
                 onObject = true;
                 daObject = rayHit.collider.gameObject;
             }
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 9 && onObject == true){
+            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 9 && onObject){
                 onObject = false;
-                daObject.transform.position = Vector3.Lerp(daObject.transform.position, objectDefaultPos.transform.position, examineSmooth);
             }
         }
     }
@@ -113,5 +114,6 @@ public class RaycastPointNClick : MonoBehaviour
 // transit from off-screen to on-screen...done
 // transit from on-screen to off-screen...done
 // transit between off-screen and object examine position...done
+//      bug fix: read the object default pos from the object...fixed
 // rotate the object in object examine position...done
-// demo an interaction with the object (in this case, drink the coffee)
+// *demo an interaction with the object (in this case, drink the coffee) -- left-click on the object to drink -- I need to do an animation, which I don't want to do right now
