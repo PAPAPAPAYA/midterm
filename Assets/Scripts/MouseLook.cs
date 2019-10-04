@@ -19,7 +19,7 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!pNCScript.onScreen){
+        if (!pNCScript.onScreen && !pNCScript.onObject){
         //returns "0" if we aren't moving the mouse
         float mouseX = Input.GetAxis("Mouse X");//horizontal mouse velocity
         float mouseY = Input.GetAxis("Mouse Y");//vertival mouse velocity
@@ -36,8 +36,6 @@ public class MouseLook : MonoBehaviour
 
         //X = pitch, Y = Yaw, Z = Roll..set z = 0f to unroll the camera
         //transform.localEulerAngles = new Vector3(verticalAngle, horizontalAngle, 0f);
-
-
         Quaternion target = Quaternion.Euler(verticalAngle,horizontalAngle,0f);
         transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
         }

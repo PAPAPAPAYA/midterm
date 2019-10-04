@@ -1102,6 +1102,7 @@ MonoBehaviour:
   examinePos: {fileID: 931928960}
   objectDefaultPos: {fileID: 234776583}
   examineSmooth: 0.05
+  objectSmooth: 0.05
 --- !u!1 &1055927985
 GameObject:
   m_ObjectHideFlags: 0
