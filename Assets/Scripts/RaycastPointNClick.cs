@@ -92,10 +92,10 @@ public class RaycastPointNClick : MonoBehaviour
         // STEP 4: shoot the raycast
 
         if (Physics.Raycast(mouseRay,out rayHit, mouseRayDist)){
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 8 && !onScreen){// if the player click on the screen, enter the screen focus position
+            if (Input.GetMouseButtonDown(0) && (rayHit.collider.gameObject.layer == 8 || rayHit.collider.gameObject.layer == 10) && !onScreen){// if the player click on the screen, enter the screen focus position
                 onScreen = true;
             }
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 8 && onScreen){// if the player clicks outside the screen, exit the screen focus position
+            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 8 && rayHit.collider.gameObject.layer != 10 && onScreen){// if the player clicks outside the screen, exit the screen focus position
                 onScreen = false;
             }
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && !onObject){
@@ -106,6 +106,13 @@ public class RaycastPointNClick : MonoBehaviour
             }
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 9 && onObject){
                 onObject = false;
+            }
+            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 10 && !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down){
+                rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = true;
+            }
+            if (Input.GetMouseButtonUp(0) && rayHit.collider.gameObject.GetComponent<ButtonScript>() != null){
+                rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = false;
+                GameManagerScript.me.buttonClicked = true; // indicate if the button is clicked
             }
         }
     }
