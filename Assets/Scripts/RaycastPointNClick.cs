@@ -96,7 +96,7 @@ public class RaycastPointNClick : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 8 && rayHit.collider.gameObject.layer != 10 && onScreen){// if the player clicks outside the screen, exit the screen focus position
                 onScreen = false;
             }
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && !onObject){
+            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && !onObject && rayHit.collider.gameObject.GetComponent<MaterialStorer>().active){
                 objectDefaultPos.transform.position = rayHit.transform.position;
                 objectDefaultPos.transform.rotation = rayHit.transform.rotation;
                 onObject = true;
@@ -114,7 +114,8 @@ public class RaycastPointNClick : MonoBehaviour
                 GameManagerScript.me.buttonClicked = true; // indicate if the button is clicked
             }
 
-            if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen){
+            if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen && (rayHit.collider.gameObject.GetComponent<MaterialStorer>().active
+                || GameManagerScript.me.unlockMode)){
                 print("glow");
                 rayHit.collider.GetComponent<MaterialStorer>().glowing = true;
                 tempObject = rayHit.collider.gameObject;
@@ -122,6 +123,13 @@ public class RaycastPointNClick : MonoBehaviour
             else if (rayHit.collider.gameObject.layer != 9 && tempObject != null){
                 tempObject.GetComponent<MaterialStorer>().glowing = false;
                 tempObject = null;
+            }
+
+            if (GameManagerScript.me.unlockMode){
+                if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9){
+                    rayHit.collider.GetComponent<MaterialStorer>().active = true;
+                    GameManagerScript.me.objectUnlockedNum++;
+                }
             }
         }
     }

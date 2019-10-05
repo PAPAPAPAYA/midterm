@@ -8,6 +8,8 @@ public class GameManagerScript : MonoBehaviour
     public GameObject clickButton;
     public GameObject waitButton;
     public bool buttonClicked = false;
+    public bool unlockMode = false;
+    public int objectUnlockedNum = 0;
     
     private void Awake() {
         me = this;
@@ -17,7 +19,13 @@ public class GameManagerScript : MonoBehaviour
         if (buttonClicked){
             clickButton.SetActive(false);
             waitButton.SetActive(true);
+            unlockMode = true;
+            buttonClicked = false;
         }
     }
 
 }
+
+// after clicking button let player choose which object to unlock...done
+// if object glows when cursor hovering over then unlockable...done
+// click object to unlock object...done
