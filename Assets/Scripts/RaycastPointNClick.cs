@@ -21,6 +21,7 @@ public class RaycastPointNClick : MonoBehaviour
     public GameObject examinePos;
     public GameObject objectDefaultPos;
     public float examineSmooth;
+    public GameObject tempObject; // for storing object that glowed
     //--------------------------------------------------------
 
     // for object examination
@@ -58,15 +59,12 @@ public class RaycastPointNClick : MonoBehaviour
             float mouseY = Input.GetAxis("Mouse Y");//vertival mouse velocity
 
             //float verticalAngle = transform.localEulerAngles.x;
-            verticalAngle -= mouseY * 5f;
-            //verticalAngle = Mathf.Clamp(verticalAngle, -10f, 20f);
+            verticalAngle += mouseY * 5f;
 
             // trying to clamp horizontalAngle
             horizontalAngle += mouseX * 5f;
-            //horizontalAngle = Mathf.Clamp(horizontalAngle, -100f, -80f);
             
             //X = pitch, Y = Yaw, Z = Roll..set z = 0f to unroll the camera
-            //transform.localEulerAngles = new Vector3(verticalAngle, horizontalAngle, 0f);
             Quaternion target = Quaternion.Euler(daObject.transform.rotation.x,horizontalAngle,verticalAngle);
             daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation,target,smooth);
             }
@@ -92,7 +90,7 @@ public class RaycastPointNClick : MonoBehaviour
         // STEP 4: shoot the raycast
 
         if (Physics.Raycast(mouseRay,out rayHit, mouseRayDist)){
-            if (Input.GetMouseButtonDown(0) && (rayHit.collider.gameObject.layer == 8 || rayHit.collider.gameObject.layer == 10) && !onScreen){// if the player click on the screen, enter the screen focus position
+            if (Input.GetMouseButtonDown(0) && (rayHit.collider.gameObject.layer == 8 || rayHit.collider.gameObject.layer == 10) && !onScreen && !onObject){// if the player click on the screen, enter the screen focus position
                 onScreen = true;
             }
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 8 && rayHit.collider.gameObject.layer != 10 && onScreen){// if the player clicks outside the screen, exit the screen focus position
@@ -107,12 +105,23 @@ public class RaycastPointNClick : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 9 && onObject){
                 onObject = false;
             }
-            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 10 && !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down){
+            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 10 && !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down
+                && !onObject){
                 rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = true;
             }
             if (Input.GetMouseButtonUp(0) && rayHit.collider.gameObject.GetComponent<ButtonScript>() != null){
                 rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = false;
                 GameManagerScript.me.buttonClicked = true; // indicate if the button is clicked
+            }
+
+            if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen){
+                print("glow");
+                rayHit.collider.GetComponent<MaterialStorer>().glowing = true;
+                tempObject = rayHit.collider.gameObject;
+            }
+            else if (rayHit.collider.gameObject.layer != 9 && tempObject != null){
+                tempObject.GetComponent<MaterialStorer>().glowing = false;
+                tempObject = null;
             }
         }
     }
@@ -123,4 +132,5 @@ public class RaycastPointNClick : MonoBehaviour
 // transit between off-screen and object examine position...done
 //      bug fix: read the object default pos from the object...fixed
 // rotate the object in object examine position...done
+// object glows when cursor on them...done
 // *demo an interaction with the object (in this case, drink the coffee) -- left-click on the object to drink -- I need to do an animation, which I don't want to do right now

@@ -27,11 +27,11 @@ public class MouseLook : MonoBehaviour
         //transform.parent.Rotate(0f, horizontalAngle, 0f);//rotate the parent of camera which is the cube
 
         //float verticalAngle = transform.localEulerAngles.x;
-        verticalAngle -= mouseY * 2f;
+        verticalAngle -= mouseY * 1f;
         verticalAngle = Mathf.Clamp(verticalAngle, -10f, 20f);
 
         // trying to clamp horizontalAngle
-        horizontalAngle += mouseX * 4f;
+        horizontalAngle += mouseX * 2f;
         horizontalAngle = Mathf.Clamp(horizontalAngle, -100f, -80f);
 
         //X = pitch, Y = Yaw, Z = Roll..set z = 0f to unroll the camera

@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 54268314}
   - component: {fileID: 54268313}
   - component: {fileID: 54268317}
+  - component: {fileID: 54268318}
   m_Layer: 9
   m_Name: mug
   m_TagString: Untagged
@@ -227,6 +228,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1.0000001}
   m_Center: {x: 0.00000005960464, y: 0, z: -0.00000008940696}
+--- !u!114 &54268318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 54268312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf0f2bdb8e018e74eb8e4f68576aa3b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glow: {fileID: 2100000, guid: 8da6ca6cee6205847b917db09f85ffa8, type: 2}
+  defaultMat: {fileID: 2100000, guid: 4de13624a33af6e4dbcf3ed11e4a7391, type: 2}
+  glowing: 0
 --- !u!1 &221794020
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,6 +439,7 @@ GameObject:
   - component: {fileID: 437041375}
   - component: {fileID: 437041374}
   - component: {fileID: 437041373}
+  - component: {fileID: 437041377}
   m_Layer: 9
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -503,6 +520,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 28.723001, z: 0}
+--- !u!114 &437041377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437041372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf0f2bdb8e018e74eb8e4f68576aa3b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glow: {fileID: 2100000, guid: a1e54c3d2af88184bb3f49590df3ea98, type: 2}
+  defaultMat: {fileID: 2100000, guid: dc44d0d2f1e4cde4b93f63ef8200eeec, type: 2}
+  glowing: 0
 --- !u!1 &631898283
 GameObject:
   m_ObjectHideFlags: 0
@@ -733,6 +765,7 @@ GameObject:
   - component: {fileID: 701919135}
   - component: {fileID: 701919134}
   - component: {fileID: 701919133}
+  - component: {fileID: 701919137}
   m_Layer: 9
   m_Name: Cylinder (1)
   m_TagString: Untagged
@@ -814,6 +847,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -87.825005}
+--- !u!114 &701919137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701919132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf0f2bdb8e018e74eb8e4f68576aa3b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glow: {fileID: 2100000, guid: ec81ff31021044a44b90579fa114c349, type: 2}
+  defaultMat: {fileID: 2100000, guid: 8108fade59065ca408b59efc6a37b518, type: 2}
+  glowing: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,7 +889,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 0.8867924, g: 0.6359031, b: 0.24679601, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -980,6 +1028,7 @@ GameObject:
   - component: {fileID: 930519422}
   - component: {fileID: 930519421}
   - component: {fileID: 930519420}
+  - component: {fileID: 930519424}
   m_Layer: 9
   m_Name: Cube (6)
   m_TagString: Untagged
@@ -1017,7 +1066,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: bf3ae769ac5aa9946bbcb089f9ba065d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1060,6 +1109,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &930519424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 930519419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf0f2bdb8e018e74eb8e4f68576aa3b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glow: {fileID: 2100000, guid: c7c4a5f726dfa9c419da417afae64c39, type: 2}
+  defaultMat: {fileID: 2100000, guid: f298e82980c722548830de7d373821f9, type: 2}
+  glowing: 0
 --- !u!1 &931928960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1213,6 +1277,7 @@ MonoBehaviour:
   examinePos: {fileID: 931928960}
   objectDefaultPos: {fileID: 1402040073}
   examineSmooth: 0.05
+  tempObject: {fileID: 0}
   objectSmooth: 0.05
 --- !u!1 &1055927985
 GameObject:
@@ -1470,6 +1535,7 @@ GameObject:
   - component: {fileID: 1661487558}
   - component: {fileID: 1661487557}
   - component: {fileID: 1661487556}
+  - component: {fileID: 1661487560}
   m_Layer: 9
   m_Name: Zippo
   m_TagString: Untagged
@@ -1550,6 +1616,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -29.250002, z: 0}
+--- !u!114 &1661487560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661487555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf0f2bdb8e018e74eb8e4f68576aa3b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glow: {fileID: 2100000, guid: 4dfe81499dc9b124facd08627a229d32, type: 2}
+  defaultMat: {fileID: 2100000, guid: febad9d2331e2f547bff9320e0b9a397, type: 2}
+  glowing: 0
 --- !u!1 &1764914115
 GameObject:
   m_ObjectHideFlags: 0
