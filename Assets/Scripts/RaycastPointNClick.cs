@@ -30,6 +30,9 @@ public class RaycastPointNClick : MonoBehaviour
     float horizontalAngle = 0f;
     public float objectSmooth = 0; // variable to smoothen the examination
 
+    // for dragging objects
+    public bool dragObject = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -49,31 +52,39 @@ public class RaycastPointNClick : MonoBehaviour
             Quaternion target = Quaternion.Euler(defaultXAngle,-90f,0f); // y is -90 because the initial angle is -90
             transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
         }
-        if (onObject)
-        { // if onObject then lerp the object to examinePos
-            daObject.transform.position = Vector3.Lerp(daObject.transform.position, examinePos.transform.position, examineSmooth);
-            if (Input.GetMouseButton(1))
-            {
-            //returns "0" if we aren't moving the mouse
-            float mouseX = Input.GetAxis("Mouse X");//horizontal mouse velocity
-            float mouseY = Input.GetAxis("Mouse Y");//vertival mouse velocity
 
-            //float verticalAngle = transform.localEulerAngles.x;
-            verticalAngle += mouseY * 5f;
-
-            // trying to clamp horizontalAngle
-            horizontalAngle += mouseX * 5f;
+        // drag and combine
+        if (dragObject){
+            // if dragObject then object.transform.position = mouse position, except the vertical axis
+            daObject.transform.position = Input.mousePosition;
             
-            //X = pitch, Y = Yaw, Z = Roll..set z = 0f to unroll the camera
-            Quaternion target = Quaternion.Euler(daObject.transform.rotation.x,horizontalAngle,verticalAngle);
-            daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation,target,smooth);
-            }
         }
-        else if (!onObject && daObject != null)// lerp the object back
-        {
-            daObject.transform.position = Vector3.Lerp(daObject.transform.position, objectDefaultPos.transform.position, examineSmooth);
-            daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation, objectDefaultPos.transform.rotation,smooth);
-        }
+        
+        // if (onObject)
+        // { // if onObject then lerp the object to examinePos
+        //     daObject.transform.position = Vector3.Lerp(daObject.transform.position, examinePos.transform.position, examineSmooth);
+        //     if (Input.GetMouseButton(1))
+        //     {
+        //     //returns "0" if we aren't moving the mouse
+        //     float mouseX = Input.GetAxis("Mouse X");//horizontal mouse velocity
+        //     float mouseY = Input.GetAxis("Mouse Y");//vertival mouse velocity
+
+        //     //float verticalAngle = transform.localEulerAngles.x;
+        //     verticalAngle += mouseY * 5f;
+
+        //     // trying to clamp horizontalAngle
+        //     horizontalAngle += mouseX * 5f;
+            
+        //     //X = pitch, Y = Yaw, Z = Roll..set z = 0f to unroll the camera
+        //     Quaternion target = Quaternion.Euler(daObject.transform.rotation.x,horizontalAngle,verticalAngle);
+        //     daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation,target,smooth);
+        //     }
+        // }
+        // else if (!onObject && daObject != null)// lerp the object back
+        // {
+        //     daObject.transform.position = Vector3.Lerp(daObject.transform.position, objectDefaultPos.transform.position, examineSmooth);
+        //     daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation, objectDefaultPos.transform.rotation,smooth);
+        // }
 
         // STEP 1: declare a ray, use mouse's screenspace pixel coordinate
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -96,15 +107,15 @@ public class RaycastPointNClick : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 8 && rayHit.collider.gameObject.layer != 10 && onScreen){// if the player clicks outside the screen, exit the screen focus position
                 onScreen = false;
             }
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && !onObject && rayHit.collider.gameObject.GetComponent<MaterialStorer>().active){
-                objectDefaultPos.transform.position = rayHit.transform.position;
-                objectDefaultPos.transform.rotation = rayHit.transform.rotation;
-                onObject = true;
-                daObject = rayHit.collider.gameObject;
-            }
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 9 && onObject){
-                onObject = false;
-            }
+            // if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && !onObject && rayHit.collider.gameObject.GetComponent<MaterialStorer>().active){
+            //     objectDefaultPos.transform.position = rayHit.transform.position;
+            //     objectDefaultPos.transform.rotation = rayHit.transform.rotation;
+            //     onObject = true;
+            //     daObject = rayHit.collider.gameObject;
+            // }
+            // if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 9 && onObject){
+            //     onObject = false;
+            // }
             if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 10 && !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down
                 && !onObject){
                 rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = true;
@@ -131,14 +142,13 @@ public class RaycastPointNClick : MonoBehaviour
                     GameManagerScript.me.objectUnlockedNum++;
                 }
             }
+
+            // drag and combine
+            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 9){
+                objectDefaultPos.transform.position = rayHit.transform.position;
+                dragObject = true;
+                daObject = rayHit.collider.gameObject;
+            }
         }
     }
 }
-// TODO
-// transit from off-screen to on-screen...done
-// transit from on-screen to off-screen...done
-// transit between off-screen and object examine position...done
-//      bug fix: read the object default pos from the object...fixed
-// rotate the object in object examine position...done
-// object glows when cursor on them...done
-// *demo an interaction with the object (in this case, drink the coffee) -- left-click on the object to drink -- I need to do an animation, which I don't want to do right now
