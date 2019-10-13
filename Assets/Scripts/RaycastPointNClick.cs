@@ -36,6 +36,8 @@ public class RaycastPointNClick : MonoBehaviour
     [Header("dragging object")]
     public Transform objectDefaultPos;
     public float examineSmooth;
+    
+    public bool putBackObject = false;
     private bool draggingObject = false;
     private GameObject tempObject;
     private float yToBeClamped;
@@ -70,14 +72,15 @@ public class RaycastPointNClick : MonoBehaviour
                 objectDefaultPos.position = rayHit.collider.gameObject.transform.position;
                 draggingObject = true;
             }
-            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
+            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode && !putBackObject){
                 rayHit.transform.position = rayHit.point;
                 yToBeClamped = 0.658f;
                 xToBeClamped = Mathf.Clamp(rayHit.transform.position.x,-0.2f,0.82f);
                 zToBeClamped = Mathf.Clamp(rayHit.transform.position.z,-2,2);
                 rayHit.transform.position = new Vector3 (xToBeClamped, yToBeClamped, rayHit.transform.position.z);
             }
-            if (Input.GetMouseButtonUp(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
+            if ((Input.GetMouseButtonUp(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode) || putBackObject){
+                print("put it back");
                 draggingObject = false;
             }
             ////////////////////////////////////////////////////////////////// screen
@@ -97,9 +100,6 @@ public class RaycastPointNClick : MonoBehaviour
                 GameManagerScript.me.buttonClicked = true; // indicate if the button is clicked
             }
             ////////////////////////////////////////////////////////////////// glow
-            if (rayHit.collider.gameObject.layer == 9){
-                print("on layer 9");
-            }
             if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen && (rayHit.collider.gameObject.GetComponent<MaterialStorer>().active
                 || GameManagerScript.me.unlockMode)){
                 //print("glow");
@@ -110,18 +110,15 @@ public class RaycastPointNClick : MonoBehaviour
                 tempObjectForGlow.GetComponent<MaterialStorer>().glowing = false;
                 tempObjectForGlow = null;
             }
-
-            /////////////////////////////////////////////////////////////////// unlock object by clicking
-            // if (GameManagerScript.me.unlockMode){
-            //     if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9){
-            //         rayHit.collider.GetComponent<MaterialStorer>().active = true;
-            //         GameManagerScript.me.objectUnlockedNum++;
-            //     }
-            // }
         }
         // drag
-        if (!draggingObject && tempObject != null){
+        if ((!draggingObject)&& tempObject != null ){
             tempObject.transform.position = Vector3.Lerp(tempObject.transform.position, objectDefaultPos.position, examineSmooth);
+            if (Vector3.Distance(tempObject.transform.position,objectDefaultPos.position )<= 0.2f){
+                tempObject.transform.position = objectDefaultPos.position;
+                putBackObject = false;
+            }
+            
         }
 
         //if onScreen then transit the camera to focus on the screen

@@ -22,7 +22,7 @@ public class GameManagerScript : MonoBehaviour
             unlockMode = true;
             buttonClicked = false;
         }
-        print(unlockMode);
+        //print(unlockMode);
     }
 
 }
