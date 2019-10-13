@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RaycastPointNClick : MonoBehaviour
 {
+    static public RaycastPointNClick me;
+
     // for transition between screen and off-screen
     [Header("on/off screen")]
     public bool onScreen = false;
@@ -15,13 +17,12 @@ public class RaycastPointNClick : MonoBehaviour
     //---------------------------------------------------------
     
     // for transition between off-screen and object examine
-    [Header("on/off object")]
+    
     public bool onObject = false;
     public GameObject daObject;
     public GameObject examinePos;
-    public GameObject objectDefaultPos;
-    public float examineSmooth;
-    public GameObject tempObject; // for storing object that glowed
+    
+    public GameObject tempObjectForGlow; // for storing object that glowed
     //--------------------------------------------------------
 
     // for object examination
@@ -29,63 +30,29 @@ public class RaycastPointNClick : MonoBehaviour
     //so as to avoid eulerangles wraparound from 180 to -180, etc.
     float horizontalAngle = 0f;
     public float objectSmooth = 0; // variable to smoothen the examination
+    //--------------------------------------------------------
 
     // for dragging objects
-    public bool dragObject = false;
+    [Header("dragging object")]
+    public Transform objectDefaultPos;
+    public float examineSmooth;
+    private bool draggingObject = false;
+    private GameObject tempObject;
+    private float yToBeClamped;
+    private float xToBeClamped;
+    private float zToBeClamped;
 
-    // Update is called once per frame
+    private void Awake() {
+        me = this;
+    }
+
     void Update()
     {
         
+
         
-        // if onScreen then transit the camera to focus on the screen
-        if (onScreen)
-        {
-            transform.position = Vector3.Lerp(transform.position,onScreenPos.transform.position,smooth);
-            Quaternion target = Quaternion.Euler(screenXAngle,-90f,0f); // y is -90 because the initial angle is -90
-            transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
-        }
-        else if(!onScreen) 
-        {
-            // lerp the camera back to default pos
-            transform.position = Vector3.Lerp(transform.position, defaultPos.transform.position,smooth);
-            Quaternion target = Quaternion.Euler(defaultXAngle,-90f,0f); // y is -90 because the initial angle is -90
-            transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
-        }
-
-        // drag and combine
-        if (dragObject){
-            // if dragObject then object.transform.position = mouse position, except the vertical axis
-            daObject.transform.position = Input.mousePosition;
-            
-        }
         
-        // if (onObject)
-        // { // if onObject then lerp the object to examinePos
-        //     daObject.transform.position = Vector3.Lerp(daObject.transform.position, examinePos.transform.position, examineSmooth);
-        //     if (Input.GetMouseButton(1))
-        //     {
-        //     //returns "0" if we aren't moving the mouse
-        //     float mouseX = Input.GetAxis("Mouse X");//horizontal mouse velocity
-        //     float mouseY = Input.GetAxis("Mouse Y");//vertival mouse velocity
-
-        //     //float verticalAngle = transform.localEulerAngles.x;
-        //     verticalAngle += mouseY * 5f;
-
-        //     // trying to clamp horizontalAngle
-        //     horizontalAngle += mouseX * 5f;
-            
-        //     //X = pitch, Y = Yaw, Z = Roll..set z = 0f to unroll the camera
-        //     Quaternion target = Quaternion.Euler(daObject.transform.rotation.x,horizontalAngle,verticalAngle);
-        //     daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation,target,smooth);
-        //     }
-        // }
-        // else if (!onObject && daObject != null)// lerp the object back
-        // {
-        //     daObject.transform.position = Vector3.Lerp(daObject.transform.position, objectDefaultPos.transform.position, examineSmooth);
-        //     daObject.transform.rotation = Quaternion.Slerp(daObject.transform.rotation, objectDefaultPos.transform.rotation,smooth);
-        // }
-
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // STEP 1: declare a ray, use mouse's screenspace pixel coordinate
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -99,23 +66,32 @@ public class RaycastPointNClick : MonoBehaviour
         Debug.DrawRay(mouseRay.origin,mouseRay.direction * mouseRayDist, Color.magenta);
 
         // STEP 4: shoot the raycast
-
+        
         if (Physics.Raycast(mouseRay,out rayHit, mouseRayDist)){
+            //////////////////////////////////////////////////////////////////// drag object
+            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
+                tempObject = rayHit.collider.gameObject;
+                objectDefaultPos.position = rayHit.collider.gameObject.transform.position;
+                draggingObject = true;
+            }
+            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
+                rayHit.transform.position = rayHit.point;
+                yToBeClamped = 0.658f;
+                xToBeClamped = Mathf.Clamp(rayHit.transform.position.x,-0.2f,0.82f);
+                zToBeClamped = Mathf.Clamp(rayHit.transform.position.z,-2,2);
+                rayHit.transform.position = new Vector3 (xToBeClamped, yToBeClamped, rayHit.transform.position.z);
+            }
+            if (Input.GetMouseButtonUp(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
+                draggingObject = false;
+            }
+            ////////////////////////////////////////////////////////////////// screen
             if (Input.GetMouseButtonDown(0) && (rayHit.collider.gameObject.layer == 8 || rayHit.collider.gameObject.layer == 10) && !onScreen && !onObject){// if the player click on the screen, enter the screen focus position
                 onScreen = true;
             }
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 8 && rayHit.collider.gameObject.layer != 10 && onScreen){// if the player clicks outside the screen, exit the screen focus position
                 onScreen = false;
             }
-            // if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && !onObject && rayHit.collider.gameObject.GetComponent<MaterialStorer>().active){
-            //     objectDefaultPos.transform.position = rayHit.transform.position;
-            //     objectDefaultPos.transform.rotation = rayHit.transform.rotation;
-            //     onObject = true;
-            //     daObject = rayHit.collider.gameObject;
-            // }
-            // if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 9 && onObject){
-            //     onObject = false;
-            // }
+            /////////////////////////////////////////////////////////////// button
             if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 10 && !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down
                 && !onObject){
                 rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = true;
@@ -124,31 +100,44 @@ public class RaycastPointNClick : MonoBehaviour
                 rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = false;
                 GameManagerScript.me.buttonClicked = true; // indicate if the button is clicked
             }
-
+            ////////////////////////////////////////////////////////////////// glow
             if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen && (rayHit.collider.gameObject.GetComponent<MaterialStorer>().active
                 || GameManagerScript.me.unlockMode)){
-                print("glow");
+                //print("glow");
                 rayHit.collider.GetComponent<MaterialStorer>().glowing = true;
-                tempObject = rayHit.collider.gameObject;
+                tempObjectForGlow = rayHit.collider.gameObject;
             }
-            else if (rayHit.collider.gameObject.layer != 9 && tempObject != null){
-                tempObject.GetComponent<MaterialStorer>().glowing = false;
-                tempObject = null;
-            }
-
-            if (GameManagerScript.me.unlockMode){
-                if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9){
-                    rayHit.collider.GetComponent<MaterialStorer>().active = true;
-                    GameManagerScript.me.objectUnlockedNum++;
-                }
+            else if (rayHit.collider.gameObject.layer != 9 && tempObjectForGlow != null){
+                tempObjectForGlow.GetComponent<MaterialStorer>().glowing = false;
+                tempObjectForGlow = null;
             }
 
-            // drag and combine
-            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 9){
-                objectDefaultPos.transform.position = rayHit.transform.position;
-                dragObject = true;
-                daObject = rayHit.collider.gameObject;
-            }
+            /////////////////////////////////////////////////////////////////// unlock object by clicking
+            // if (GameManagerScript.me.unlockMode){
+            //     if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9){
+            //         rayHit.collider.GetComponent<MaterialStorer>().active = true;
+            //         GameManagerScript.me.objectUnlockedNum++;
+            //     }
+            // }
+        }
+        // drag
+        if (!draggingObject && tempObject != null){
+            tempObject.transform.position = Vector3.Lerp(tempObject.transform.position, objectDefaultPos.position, examineSmooth);
+        }
+
+        //if onScreen then transit the camera to focus on the screen
+        if (onScreen)
+        {
+            transform.position = Vector3.Lerp(transform.position,onScreenPos.transform.position,smooth);
+            Quaternion target = Quaternion.Euler(screenXAngle,-90f,0f); // y is -90 because the initial angle is -90
+            transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
+        }
+        else if(!onScreen)
+        {
+            // lerp the camera back to default pos
+            transform.position = Vector3.Lerp(transform.position, defaultPos.transform.position,smooth);
+            Quaternion target = Quaternion.Euler(defaultXAngle,-90f,0f); // y is -90 because the initial angle is -90
+            transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
         }
     }
 }

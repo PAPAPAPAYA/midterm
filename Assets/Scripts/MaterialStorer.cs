@@ -12,7 +12,7 @@ public class MaterialStorer : MonoBehaviour
     void Update()
     {
         if (active){
-            print("activated");
+            //print("activated");
         }
         if (glowing){
             GetComponent<MeshRenderer>().material = glow;
