@@ -48,10 +48,6 @@ public class RaycastPointNClick : MonoBehaviour
 
     void Update()
     {
-        
-
-        
-        
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // STEP 1: declare a ray, use mouse's screenspace pixel coordinate
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -101,6 +97,9 @@ public class RaycastPointNClick : MonoBehaviour
                 GameManagerScript.me.buttonClicked = true; // indicate if the button is clicked
             }
             ////////////////////////////////////////////////////////////////// glow
+            if (rayHit.collider.gameObject.layer == 9){
+                print("on layer 9");
+            }
             if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen && (rayHit.collider.gameObject.GetComponent<MaterialStorer>().active
                 || GameManagerScript.me.unlockMode)){
                 //print("glow");
