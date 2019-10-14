@@ -27,79 +27,19 @@ public class CombineManagerScript : MonoBehaviour
             print("i can't do that with zippo and mug.");
             igdZippo = false;
             igdMug = false;
-            RaycastPointNClick.me.putBackObject = true;
+            //RaycastPointNClick.me.putBackObject = true;
         }
         if (igdZippo && igdPhone){
             print("i can't do that with zippo and phone");
             igdZippo = false;
             igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
+            //RaycastPointNClick.me.putBackObject = true;
         }
         if (igdMug && igdPhone){
             print("my phone is now broken.");
             igdZippo = false;
             igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
-        }
-        if (igdMug && igdPhone){
-            print("my phone is now broken.");
-            igdZippo = false;
-            igdPhone = false;
-            RaycastPointNClick.me.putBackObject = true;
+            //RaycastPointNClick.me.putBackObject = true;
         }
             
     }

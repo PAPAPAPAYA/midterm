@@ -17,7 +17,6 @@ public class RaycastPointNClick : MonoBehaviour
     //---------------------------------------------------------
     
     // for transition between off-screen and object examine
-    
     public bool onObject = false;
     public GameObject daObject;
     public GameObject examinePos;
@@ -33,17 +32,20 @@ public class RaycastPointNClick : MonoBehaviour
     //--------------------------------------------------------
 
     // for dragging objects
-    [Header("dragging object")]
-    public Transform objectDefaultPos;
-    public float examineSmooth;
+    // [Header("dragging object")]
+    // public Transform objectDefaultPos;
+    // public float examineSmooth;
     
-    public bool putBackObject = false;
-    private bool draggingObject = false;
-    private GameObject tempObject;
-    private float yToBeClamped;
-    private float xToBeClamped;
-    private float zToBeClamped;
+    // public bool putBackObject = false;
+    // private bool draggingObject = false;
+    // private GameObject tempObject;
+    // private float yToBeClamped;
+    // private float xToBeClamped;
+    // private float zToBeClamped;
+    //////////////////////////////////////////////////////////////////
 
+    // for selecting objects by clicking
+    //////////////////////////////////////////////////////////////////
     private void Awake() {
         me = this;
     }
@@ -64,25 +66,52 @@ public class RaycastPointNClick : MonoBehaviour
         Debug.DrawRay(mouseRay.origin,mouseRay.direction * mouseRayDist, Color.magenta);
 
         // STEP 4: shoot the raycast
-        
         if (Physics.Raycast(mouseRay,out rayHit, mouseRayDist)){
-            //////////////////////////////////////////////////////////////////// drag object
+            //////////////////////////////////////////////////////////////////// item select
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
-                tempObject = rayHit.collider.gameObject;
-                objectDefaultPos.position = rayHit.collider.gameObject.transform.position;
-                draggingObject = true;
+                print( rayHit.collider.gameObject.name+" selected");
+                if (rayHit.collider.gameObject.name == "Zippo"){ // igdNum = 1
+                    CombineManagerScript.me.PassIngredient(1); // tell CombineManagerScript which ingredient is combing
+                }
+                if (rayHit.collider.gameObject.name == "mug"){ // igdNum = 2
+                    CombineManagerScript.me.PassIngredient(2);
+                }
+                if (rayHit.collider.gameObject.name == "phone"){ // igdNum = 3
+                    CombineManagerScript.me.PassIngredient(3);
+                }
+                if (rayHit.collider.gameObject.name == "pen"){ // igdNum = 4
+                    CombineManagerScript.me.PassIngredient(4);
+                }
+                if (rayHit.collider.gameObject.name == "paper"){ // igdNum = 5
+                    CombineManagerScript.me.PassIngredient(5);
+                }
+                if (rayHit.collider.gameObject.name == "jbl"){ // igdNum = 6
+                    CombineManagerScript.me.PassIngredient(6);
+                }
+                if (rayHit.collider.gameObject.name == "water boiler"){ // igdNum = 7
+                    CombineManagerScript.me.PassIngredient(7);
+                }
+                if (rayHit.collider.gameObject.name == "seven star"){ // igdNum = 8
+                    CombineManagerScript.me.PassIngredient(8);
+                }
             }
-            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode && !putBackObject){
-                rayHit.transform.position = rayHit.point;
-                yToBeClamped = 0.658f;
-                xToBeClamped = Mathf.Clamp(rayHit.transform.position.x,-0.2f,0.82f);
-                zToBeClamped = Mathf.Clamp(rayHit.transform.position.z,-2,2);
-                rayHit.transform.position = new Vector3 (xToBeClamped, yToBeClamped, rayHit.transform.position.z);
-            }
-            if ((Input.GetMouseButtonUp(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode) || putBackObject){
-                print("put it back");
-                draggingObject = false;
-            }
+            //////////////////////////////////////////////////////////////////// drag object
+            // if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
+            //     tempObject = rayHit.collider.gameObject;
+            //     objectDefaultPos.position = rayHit.collider.gameObject.transform.position;
+            //     draggingObject = true;
+            // }
+            // if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode && !putBackObject){
+            //     rayHit.transform.position = rayHit.point;
+            //     yToBeClamped = 0.658f;
+            //     xToBeClamped = Mathf.Clamp(rayHit.transform.position.x,-0.2f,0.82f);
+            //     zToBeClamped = Mathf.Clamp(rayHit.transform.position.z,-2,2);
+            //     rayHit.transform.position = new Vector3 (xToBeClamped, yToBeClamped, rayHit.transform.position.z);
+            // }
+            // if ((Input.GetMouseButtonUp(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode) || putBackObject){
+            //     print("put it back");
+            //     draggingObject = false;
+            // }
             ////////////////////////////////////////////////////////////////// screen
             if (Input.GetMouseButtonDown(0) && (rayHit.collider.gameObject.layer == 8 || rayHit.collider.gameObject.layer == 10) && !onScreen && !onObject){// if the player click on the screen, enter the screen focus position
                 onScreen = true;
@@ -112,14 +141,13 @@ public class RaycastPointNClick : MonoBehaviour
             }
         }
         // drag
-        if ((!draggingObject)&& tempObject != null ){
-            tempObject.transform.position = Vector3.Lerp(tempObject.transform.position, objectDefaultPos.position, examineSmooth);
-            if (Vector3.Distance(tempObject.transform.position,objectDefaultPos.position )<= 0.2f){
-                tempObject.transform.position = objectDefaultPos.position;
-                putBackObject = false;
-            }
-            
-        }
+        // if ((!draggingObject)&& tempObject != null ){
+        //     tempObject.transform.position = Vector3.Lerp(tempObject.transform.position, objectDefaultPos.position, examineSmooth);
+        //     if (Vector3.Distance(tempObject.transform.position,objectDefaultPos.position )<= 0.2f){
+        //         tempObject.transform.position = objectDefaultPos.position;
+        //         putBackObject = false;
+        //     }
+        // }
 
         //if onScreen then transit the camera to focus on the screen
         if (onScreen)
