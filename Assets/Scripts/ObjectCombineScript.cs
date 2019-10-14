@@ -17,5 +17,20 @@ public class ObjectCombineScript : MonoBehaviour
         if (other.gameObject.name == "phone"){ // igdNum = 3
             CombineManagerScript.me.PassIngredient(3);
         }
+        if (other.gameObject.name == "pen"){ // igdNum = 4
+            CombineManagerScript.me.PassIngredient(4);
+        }
+        if (other.gameObject.name == "paper"){ // igdNum = 5
+            CombineManagerScript.me.PassIngredient(5);
+        }
+        if (other.gameObject.name == "jbl"){ // igdNum = 6
+            CombineManagerScript.me.PassIngredient(6);
+        }
+        if (other.gameObject.name == "water boiler"){ // igdNum = 7
+            CombineManagerScript.me.PassIngredient(7);
+        }
+        if (other.gameObject.name == "seven star"){ // igdNum = 8
+            CombineManagerScript.me.PassIngredient(8);
+        }
     }
 }
