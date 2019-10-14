@@ -37,9 +37,10 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdMug && igdPhone){
             print("my phone is now broken.");
+            GameManagerScript.me.combinationNum ++;
             igdZippo = false;
             igdPhone = false;
-            //RaycastPointNClick.me.putBackObject = true;
+            
         }
             
     }

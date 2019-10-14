@@ -15,7 +15,7 @@ public class ButtonScript : MonoBehaviour
         if (Down){
             myMR.material = buttonDown;
         }
-        else{
+        else if (!Down){
             myMR.material = buttonUp;
         }
     }

@@ -14,6 +14,7 @@ public class RaycastPointNClick : MonoBehaviour
     public float defaultXAngle = 0f;
     public float screenXAngle = 0f;
     public float smooth = 0f; // variable to smoothen the slerp
+    private bool screenCameraReady = false;
     //---------------------------------------------------------
     
     // for transition between off-screen and object examine
@@ -95,38 +96,45 @@ public class RaycastPointNClick : MonoBehaviour
                     CombineManagerScript.me.PassIngredient(8);
                 }
             }
-            //////////////////////////////////////////////////////////////////// drag object
-            // if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
-            //     tempObject = rayHit.collider.gameObject;
-            //     objectDefaultPos.position = rayHit.collider.gameObject.transform.position;
-            //     draggingObject = true;
-            // }
-            // if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode && !putBackObject){
-            //     rayHit.transform.position = rayHit.point;
-            //     yToBeClamped = 0.658f;
-            //     xToBeClamped = Mathf.Clamp(rayHit.transform.position.x,-0.2f,0.82f);
-            //     zToBeClamped = Mathf.Clamp(rayHit.transform.position.z,-2,2);
-            //     rayHit.transform.position = new Vector3 (xToBeClamped, yToBeClamped, rayHit.transform.position.z);
-            // }
-            // if ((Input.GetMouseButtonUp(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode) || putBackObject){
-            //     print("put it back");
-            //     draggingObject = false;
-            // }
             ////////////////////////////////////////////////////////////////// screen
-            if (Input.GetMouseButtonDown(0) && (rayHit.collider.gameObject.layer == 8 || rayHit.collider.gameObject.layer == 10) && !onScreen && !onObject){// if the player click on the screen, enter the screen focus position
+            if (Input.GetMouseButtonDown(0)
+                && (rayHit.collider.gameObject.layer == 8
+                || rayHit.collider.gameObject.layer == 10
+                || rayHit.collider.gameObject.layer == 11)
+                && !onScreen){ // if the player click on the screen, enter the screen focus position
                 onScreen = true;
             }
-            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer != 8 && rayHit.collider.gameObject.layer != 10 && onScreen){// if the player clicks outside the screen, exit the screen focus position
+            if (Input.GetMouseButtonDown(0)
+                && rayHit.collider.gameObject.layer != 8
+                && rayHit.collider.gameObject.layer != 10
+                && rayHit.collider.gameObject.layer != 11
+                && onScreen){// if the player clicks outside the screen, exit the screen focus position
                 onScreen = false;
             }
             /////////////////////////////////////////////////////////////// button
-            if (Input.GetMouseButton(0) && rayHit.collider.gameObject.layer == 10 && !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down
-                && !onObject){
+            if (Input.GetMouseButtonDown(0)
+                && rayHit.collider.gameObject.layer == 11 // layer 11 is keyButtons, these buttons can enable unlockMode for player to combine
+                && !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down
+                && onScreen
+                && screenCameraReady)
+            {
+                
                 rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = true;
             }
-            if (Input.GetMouseButtonUp(0) && rayHit.collider.gameObject.GetComponent<ButtonScript>() != null){
+            if (Input.GetMouseButtonUp(0)
+                && rayHit.collider.gameObject.GetComponent<ButtonScript>() != null
+                && screenCameraReady)
+            {
                 rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = false;
-                GameManagerScript.me.buttonClicked = true; // indicate if the button is clicked
+                GameManagerScript.me.keyButtonClicked = true; // indicate if the key button is clicked
+            }
+
+            if (Input.GetMouseButtonDown(0)
+                && rayHit.collider.gameObject.layer == 10 // layer 10 is normal buttons, only disappear once clicked
+                && onScreen
+                && screenCameraReady)
+            {
+                GameManagerScript.me.buttonClicked = true;
             }
             ////////////////////////////////////////////////////////////////// glow
             if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen && (rayHit.collider.gameObject.GetComponent<MaterialStorer>().active
@@ -140,14 +148,6 @@ public class RaycastPointNClick : MonoBehaviour
                 tempObjectForGlow = null;
             }
         }
-        // drag
-        // if ((!draggingObject)&& tempObject != null ){
-        //     tempObject.transform.position = Vector3.Lerp(tempObject.transform.position, objectDefaultPos.position, examineSmooth);
-        //     if (Vector3.Distance(tempObject.transform.position,objectDefaultPos.position )<= 0.2f){
-        //         tempObject.transform.position = objectDefaultPos.position;
-        //         putBackObject = false;
-        //     }
-        // }
 
         //if onScreen then transit the camera to focus on the screen
         if (onScreen)
@@ -155,6 +155,10 @@ public class RaycastPointNClick : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position,onScreenPos.transform.position,smooth);
             Quaternion target = Quaternion.Euler(screenXAngle,-90f,0f); // y is -90 because the initial angle is -90
             transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
+            if (Vector3.Distance(transform.position,onScreenPos.transform.position)<0.1f){
+                transform.position = onScreenPos.transform.position;
+                screenCameraReady = true;
+            }
         }
         else if(!onScreen)
         {
@@ -162,6 +166,7 @@ public class RaycastPointNClick : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, defaultPos.transform.position,smooth);
             Quaternion target = Quaternion.Euler(defaultXAngle,-90f,0f); // y is -90 because the initial angle is -90
             transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
+            screenCameraReady = false;
         }
     }
 }
