@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class RaycastPointNClick : MonoBehaviour
 {
     static public RaycastPointNClick me;
 
-    // for transition between screen and off-screen
-    [Header("on/off screen")]
     public bool onScreen = false;
     public GameObject onScreenPos;
     public GameObject defaultPos;   
@@ -15,38 +14,22 @@ public class RaycastPointNClick : MonoBehaviour
     public float screenXAngle = 0f;
     public float smooth = 0f; // variable to smoothen the slerp
     private bool screenCameraReady = false;
-    //---------------------------------------------------------
-    
-    // for transition between off-screen and object examine
-    public bool onObject = false;
-    public GameObject daObject;
-    public GameObject examinePos;
-    
     public GameObject tempObjectForGlow; // for storing object that glowed
-    //--------------------------------------------------------
 
-    // for object examination
-    float verticalAngle = 0f; // store vertical look in a separate variable
-    //so as to avoid eulerangles wraparound from 180 to -180, etc.
-    float horizontalAngle = 0f;
-    public float objectSmooth = 0; // variable to smoothen the examination
-    //--------------------------------------------------------
+    /////////// indicators of object state
+    public bool wetZippo = false;
+    public bool wetPaper = false;
+    public bool burntPaper = false;
+    public bool burntWetPaper = false;
+    public bool completedPaper = false;
+    public bool onJBL = false;
+    public bool brokenJBL = false;
+    public bool brokenPhone = false;
+    public bool wetCig = false;
+    public bool lightedCig = false;
 
-    // for dragging objects
-    // [Header("dragging object")]
-    // public Transform objectDefaultPos;
-    // public float examineSmooth;
-    
-    // public bool putBackObject = false;
-    // private bool draggingObject = false;
-    // private GameObject tempObject;
-    // private float yToBeClamped;
-    // private float xToBeClamped;
-    // private float zToBeClamped;
-    //////////////////////////////////////////////////////////////////
+    public TextMeshProUGUI myText;
 
-    // for selecting objects by clicking
-    //////////////////////////////////////////////////////////////////
     private void Awake() {
         me = this;
     }
@@ -137,9 +120,63 @@ public class RaycastPointNClick : MonoBehaviour
                 GameManagerScript.me.buttonClicked = true;
             }
             ////////////////////////////////////////////////////////////////// glow
-            if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen && GameManagerScript.me.unlockMode){
-                //print("glow");
+            if (rayHit.collider.gameObject.layer == 9 && !onScreen && GameManagerScript.me.unlockMode){
                 rayHit.collider.GetComponent<MaterialStorer>().glowing = true;
+                if (rayHit.collider.gameObject.name == "mug"){
+                    myText.text = "A mug, bought at Ikea. There is water in it. It's a good thing to stay hydrated.";
+                }
+                if (rayHit.collider.gameObject.name == "Zippo"){
+                    if (wetZippo){
+                        myText.text = "A Zippo lighter. Its cotten is wet.";
+                    }
+                    else{
+                        myText.text = "A Zippo lighter. I really like it.";
+                    }
+                }
+                if (rayHit.collider.gameObject.name == "phone"){
+                    if (brokenPhone){
+                        myText.text = "A phone. It's broken now.";
+                    }
+                    else{
+                        myText.text = "A phone. Very cheap. Has lots of issue.";
+                    }
+                }
+                if (rayHit.collider.gameObject.name == "jbl"){
+                    if (brokenJBL){
+                        myText.text = "A JBL Flip3 music player. It's broken.";
+                    }
+                    else if (onJBL){
+                        myText.text = "A JBL Flip3 music player. It's playing music.";
+                    }
+                    else{
+                        myText.text = "A JBL Flip3 music player. I really like the color. Can play music if I have my phone.";
+                    }
+                }
+                if (rayHit.collider.gameObject.name == "pen"){
+                    myText.text = "An ordinary pen. Nothing special about it. Can write on paper.";
+                }
+                if (rayHit.collider.gameObject.name == "paper"){
+                    if (completedPaper){
+                        myText.text = "My Intermediate Game Development handout. It's finished.";
+                    }
+                    else if (burntPaper){
+                        myText.text = "My Intermediate Game Development handout. It's burnt. One less homework to do.";
+                    }
+                    else if (wetPaper){
+                        myText.text = "My Intermediate Game Development handout. It's wet. One less homework to do.";
+                    }
+                    else{
+                        myText.text = "My Intermediate Game Development handout. Not yet completed.";
+                    }
+                }
+                if (rayHit.collider.gameObject.name == "seven star"){
+                    if (wetCig){
+                        myText.text = "A box of cigarette of brand Seven Star. All wet.";
+                    }
+                    else {
+                        myText.text = "A box of cigarette of brand Seven Star. Good price.";
+                    }
+                }
                 tempObjectForGlow = rayHit.collider.gameObject;
             }
             else if (rayHit.collider.gameObject.layer != 9 && tempObjectForGlow != null){

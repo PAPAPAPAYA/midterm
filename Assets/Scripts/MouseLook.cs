@@ -19,7 +19,7 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!pNCScript.onScreen && !pNCScript.onObject){
+        if (!pNCScript.onScreen){
         //returns "0" if we aren't moving the mouse
         float mouseX = Input.GetAxis("Mouse X");//horizontal mouse velocity
         float mouseY = Input.GetAxis("Mouse Y");//vertival mouse velocity

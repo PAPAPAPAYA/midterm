@@ -1416,6 +1416,7 @@ MonoBehaviour:
   igdCig: 0
   igdJbl: 0
   igdWB: 0
+  myText: {fileID: 1591346295}
 --- !u!4 &728108891
 Transform:
   m_ObjectHideFlags: 0
@@ -1919,11 +1920,8 @@ MonoBehaviour:
   defaultXAngle: 45
   screenXAngle: 0
   smooth: 0.05
-  onObject: 0
-  daObject: {fileID: 0}
-  examinePos: {fileID: 931928960}
   tempObjectForGlow: {fileID: 0}
-  objectSmooth: 0.05
+  myText: {fileID: 1591346295}
 --- !u!1 &1048499664
 GameObject:
   m_ObjectHideFlags: 0

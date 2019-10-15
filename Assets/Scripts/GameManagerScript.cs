@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameManagerScript : MonoBehaviour
 {
     static public GameManagerScript me;
-    ///////////////////////////////////////////////// for clicking button
+    
+    [Header("for clicking buttons")]
     public GameObject keyButton1;
     public GameObject waitButton;
     public GameObject normalButton1;
@@ -15,9 +16,10 @@ public class GameManagerScript : MonoBehaviour
     public bool unlockMode = false;
     private int phase = 1;
     private int subPhase = 1;
-    ///////////////////////////////////////////////// for progress bar
-    public GameObject progressBar;
     
+
+    [Header("for progress bar")]
+    public GameObject progressBar;
     public GameObject confirmButton1;
     public GameObject confirmButton2;
     public float combinationNum = 0f;
