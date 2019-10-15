@@ -28,9 +28,18 @@ public class RaycastPointNClick : MonoBehaviour
     public bool wetCig = false;
     public bool lightedCig = false;
 
+    ////////////////////////////////////////////// text
     public TextMeshProUGUI myText;
     public string textToBeDisplayed;
 
+    public string burntText = "";
+    public string wetText = "";
+    public string burntWetText = "";
+    public string completedText = "";
+
+    //////////////////////////////////////////// ending
+    public bool ending = false;
+    public GameObject screen;
     private void Awake() {
         me = this;
     }
@@ -55,7 +64,6 @@ public class RaycastPointNClick : MonoBehaviour
         if (Physics.Raycast(mouseRay,out rayHit, mouseRayDist)){
             //////////////////////////////////////////////////////////////////// item select
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
-                print( rayHit.collider.gameObject.name+" selected");
                 if (rayHit.collider.gameObject.name == "Zippo"){ // igdNum = 1
                     CombineManagerScript.me.PassIngredient(1);// tell CombineManagerScript which ingredient is combing
                 }
@@ -79,12 +87,18 @@ public class RaycastPointNClick : MonoBehaviour
                 }
                 rayHit.collider.gameObject.GetComponent<MaterialStorer>().selected = true; // indicate if the object is selected, if true then object glows
             }
+            if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 8 && GameManagerScript.me.unlockMode && ending){
+                //print( rayHit.collider.gameObject.name+" selected");
+                CombineManagerScript.me.PassIngredient(8);
+                rayHit.collider.gameObject.GetComponent<MaterialStorer>().selected = true;
+            }
             ////////////////////////////////////////////////////////////////// screen
             if (Input.GetMouseButtonDown(0)
                 && (rayHit.collider.gameObject.layer == 8
                 || rayHit.collider.gameObject.layer == 10
                 || rayHit.collider.gameObject.layer == 11)
-                && !onScreen){ // if the player click on the screen, enter the screen focus position
+                && !onScreen
+                && !ending){ // if the player click on the screen, enter the screen focus position
                 onScreen = true;
             }
             if (Input.GetMouseButtonDown(0)
@@ -97,20 +111,20 @@ public class RaycastPointNClick : MonoBehaviour
             /////////////////////////////////////////////////////////////// button
             if (Input.GetMouseButtonDown(0)
                 && rayHit.collider.gameObject.layer == 11 // layer 11 is keyButtons, these buttons can enable unlockMode for player to combine
-                && !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down
+                //&& !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down
                 && onScreen
                 && screenCameraReady)
             {
-                
-                rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = true;
-            }
-            if (Input.GetMouseButtonUp(0)
-                && rayHit.collider.gameObject.GetComponent<ButtonScript>() != null
-                && screenCameraReady)
-            {
-                rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = false;
                 GameManagerScript.me.keyButtonClicked = true; // indicate if the key button is clicked
+                //rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = true;
             }
+            // if (Input.GetMouseButtonUp(0)
+            //     && rayHit.collider.gameObject.GetComponent<ButtonScript>() != null
+            //     && screenCameraReady)
+            // {
+            //     rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = false;
+                
+            // }
 
             if (Input.GetMouseButtonDown(0)
                 && rayHit.collider.gameObject.layer == 10 // layer 10 is normal buttons, only disappear once clicked
@@ -120,8 +134,20 @@ public class RaycastPointNClick : MonoBehaviour
                 GameManagerScript.me.buttonClicked = true;
             }
             ////////////////////////////////////////////////////////////////// glow
+            if (rayHit.collider.gameObject.layer == 8 && !onScreen && GameManagerScript.me.unlockMode && ending){
+                //print(rayHit.collider.GetComponent<MaterialStorer>().glowing);
+                rayHit.collider.GetComponent<MaterialStorer>().glowing = true;
+                textToBeDisplayed = "A computer. Source of pain.";
+                tempObjectForGlow = rayHit.collider.gameObject;
+            }
+            else if (rayHit.collider.gameObject.layer != 8 && tempObjectForGlow != null && rayHit.collider.gameObject.layer != 9){
+                //print("don't glow");
+                tempObjectForGlow.GetComponent<MaterialStorer>().glowing = false;
+                CombineManagerScript.me.combineText = "";
+                tempObjectForGlow = null;
+            }
+
             if (rayHit.collider.gameObject.layer == 9 && !onScreen && GameManagerScript.me.unlockMode){
-                
                 rayHit.collider.GetComponent<MaterialStorer>().glowing = true;
                 if (rayHit.collider.gameObject.name == "mug"){
                     textToBeDisplayed = "A mug, bought at Ikea. There is water in it. It's a good thing to stay hydrated.";
@@ -157,20 +183,32 @@ public class RaycastPointNClick : MonoBehaviour
                     textToBeDisplayed = "An ordinary pen. Nothing special about it. Can write on paper.";
                 }
                 if (rayHit.collider.gameObject.name == "paper"){
+                    
+                    textToBeDisplayed = "My Intermediate Game Development handout."+ burntText + wetText + burntWetText + completedText;
                     if (completedPaper){
-                        textToBeDisplayed = "My Intermediate Game Development handout. It's finished.";
+                        completedText = " It's finished.";
                     }
-                    else if (burntWetPaper){
-                        textToBeDisplayed = "My Intermediate Game Development handout. It's a mess. One less homework to do.";
+                    if (burntWetPaper && !completedPaper){
+                        burntWetText = " It's a mess. One less homework to do.";
+                        burntText = "";
+                        wetText = "";
                     }
-                    else if (burntPaper && !wetPaper){
-                        textToBeDisplayed = "My Intermediate Game Development handout. It's burnt. One less homework to do.";
+                    if (burntWetPaper && completedPaper){
+                        burntWetText = " It's a mess.";
+                        burntText = "";
+                        wetText = "";
                     }
-                    else if (wetPaper && !burntPaper){
-                        textToBeDisplayed = "My Intermediate Game Development handout. It's wet. Still need to do it later.";
+                    if (burntPaper && !wetPaper && !completedPaper && !burntWetPaper){
+                        burntText = " It's burnt. One less homework to do.";
                     }
-                    else{
-                        textToBeDisplayed = "My Intermediate Game Development handout. Not yet completed.";
+                    if (burntPaper && !wetPaper && completedPaper && !burntWetPaper){
+                        burntText = " It's burnt.";
+                    }
+                    if (wetPaper && !burntPaper && !completedPaper && !burntWetPaper){
+                        wetText = " It's wet. Still need to do it later.";
+                    }
+                    if (wetPaper && !burntPaper && completedPaper && !burntWetPaper){
+                        wetText = " It's wet.";
                     }
                 }
                 if (rayHit.collider.gameObject.name == "seven star"){
@@ -183,7 +221,7 @@ public class RaycastPointNClick : MonoBehaviour
                 }
                 tempObjectForGlow = rayHit.collider.gameObject;
             }
-            else if (rayHit.collider.gameObject.layer != 9 && tempObjectForGlow != null){
+            else if (rayHit.collider.gameObject.layer != 9 && tempObjectForGlow != null && rayHit.collider.gameObject.layer != 8){
                 tempObjectForGlow.GetComponent<MaterialStorer>().glowing = false;
                 CombineManagerScript.me.combineText = "";
                 tempObjectForGlow = null;

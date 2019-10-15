@@ -8,21 +8,36 @@ public class MaterialStorer : MonoBehaviour
     public Material defaultMat;
     public bool glowing = false;
     public bool isScreenFrame = false;
+    public bool screenCanBeSelected = false;
     public bool selected = false;
 
     void Update()
     {
-        if (selected){
+        if (selected && !isScreenFrame){
             GetComponent<MeshRenderer>().material = glow;
         }
-        if (isScreenFrame){
-            print("only active at the ending");
-        }
-        if (glowing){
+        if (glowing && !isScreenFrame){
             GetComponent<MeshRenderer>().material = glow;
         }
-        else if (!selected && !glowing){
+        if (selected && isScreenFrame && screenCanBeSelected){
+            GetComponent<MeshRenderer>().material = glow;
+        }
+        if (glowing && isScreenFrame && screenCanBeSelected){
+            GetComponent<MeshRenderer>().material = glow;
+        }
+        if (!selected && !glowing && !isScreenFrame){
             GetComponent<MeshRenderer>().material = defaultMat;
+        }
+        if (!selected && !glowing && isScreenFrame && screenCanBeSelected){
+            GetComponent<MeshRenderer>().material = defaultMat;
+        }
+
+
+
+        if (GameManagerScript.me.phase == 3 && GameManagerScript.me.unlockMode){ // in this ending phase screen can be selected
+            if (isScreenFrame){
+                screenCanBeSelected = true;
+            }
         }
     }
 }
