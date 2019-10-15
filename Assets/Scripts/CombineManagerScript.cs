@@ -14,6 +14,7 @@ public class CombineManagerScript : MonoBehaviour
     public bool igdCig = false;
     public bool igdJbl = false;
     public bool igdWB = false;
+    public string combineText;
 
     public TextMeshProUGUI myText;
 
@@ -27,17 +28,24 @@ public class CombineManagerScript : MonoBehaviour
     ///////////////////////////////////////////////////////////////////// do the combination
     private void Update() {
         ///////////////////// zippo
+        if (combineText.Length > 4){
+            RaycastPointNClick.me.textToBeDisplayed = combineText;
+        }
         if (igdZippo && igdMug){
-            myText.text = "The cotton is now wet. Can't use the Zippo for now.";
+            combineText = "The cotton is now wet. Can't use the Zippo for now.";
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.wetZippo = true;
             igdZippo = false;
             igdMug = false;
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("mug").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdZippo && igdPhone){
             myText.text = ("i can't do that with Zippo and phone");
             igdZippo = false;
             igdPhone = false;
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
         } 
         if (igdZippo && igdPaper && !RaycastPointNClick.me.wetPaper && !RaycastPointNClick.me.wetZippo){
             myText.text = ("The handout is burnt.");
@@ -45,21 +53,29 @@ public class CombineManagerScript : MonoBehaviour
             RaycastPointNClick.me.burntPaper = true;
             igdZippo = false;
             igdPaper = false;
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdZippo && igdPaper && !RaycastPointNClick.me.wetPaper && RaycastPointNClick.me.wetZippo){
             myText.text = ("Can't burn the handout with wet cotten.");
             igdZippo = false;
             igdPaper = false;
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdZippo && igdPaper && RaycastPointNClick.me.wetPaper){
             myText.text = ("The handout is wet. I can't burn it. Still need to complete it later.");
             igdZippo = false;
             igdPaper = false;
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdZippo && igdPen){
             myText.text = ("I can't do that with Zippo and pen.");
             igdZippo = false;
             igdPen = false;
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdZippo && igdCig && !RaycastPointNClick.me.wetCig){
             myText.text = ("The cigarette is lighted.");
@@ -67,16 +83,22 @@ public class CombineManagerScript : MonoBehaviour
             RaycastPointNClick.me.lightedCig = true;
             igdZippo = false;
             igdCig = false;
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdZippo && igdCig && RaycastPointNClick.me.wetCig){
             myText.text = ("I can't light up a wet cigarette.");
             igdZippo = false;
             igdCig = false;
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdZippo && igdJbl){
             myText.text = ("I can't do that with Zippo and jbl.");
             igdZippo = false;
             igdJbl = false;
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("jbl").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         ///////////////////// mug
         if (igdMug && igdPhone){
@@ -85,11 +107,15 @@ public class CombineManagerScript : MonoBehaviour
             RaycastPointNClick.me.brokenPhone = true;
             igdMug = false;
             igdPhone = false;
+            GameObject.Find("mug").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
         }  
         if (igdMug && igdPen){
             myText.text = ("I can't do that with mug and pen.");
             igdMug = false;
             igdPen = false;
+            GameObject.Find("mug").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
         }  
         if (igdMug && igdPaper && !RaycastPointNClick.me.burntPaper){
             myText.text = ("The handout is now wet.");
@@ -97,6 +123,8 @@ public class CombineManagerScript : MonoBehaviour
             RaycastPointNClick.me.wetPaper = true;
             igdMug = false;
             igdPaper = false;
+            GameObject.Find("mug").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         } 
         if (igdMug && igdPaper && RaycastPointNClick.me.burntPaper){
             myText.text = ("The handout is now a mess.");
@@ -104,6 +132,8 @@ public class CombineManagerScript : MonoBehaviour
             RaycastPointNClick.me.burntWetPaper = true;
             igdMug = false;
             igdPaper = false;
+            GameObject.Find("mug").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }  
         if (igdMug && igdJbl){
             myText.text = ("my JBL player is now broken.");
@@ -111,6 +141,8 @@ public class CombineManagerScript : MonoBehaviour
             RaycastPointNClick.me.brokenJBL = true;
             igdMug = false;
             igdJbl = false;
+            GameObject.Find("mug").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("jbl").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdMug && igdCig){
             myText.text = ("The cigarettes are all wet, can't smoke them anymore.");
@@ -118,22 +150,37 @@ public class CombineManagerScript : MonoBehaviour
             RaycastPointNClick.me.wetCig = true;
             igdMug = false;
             igdCig = false;
+            GameObject.Find("mug").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         ////////////////////// phone
         if (igdPhone && igdPen){
             myText.text = ("I can't do that with phone and pen.");
             igdPhone = false;
             igdPen = false;
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPhone && igdPaper){
             myText.text = ("I can't do that with phone and my handout.");
             igdPhone = false;
             igdPaper = false;
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPhone && igdCig){
             myText.text = ("i can't do that with phone and cigarette");
             igdCig = false;
             igdPhone = false;
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
+        }
+        if (igdPhone && igdJbl && RaycastPointNClick.me.brokenJBL && RaycastPointNClick.me.brokenPhone){
+            myText.text = ("Both my phone and my JBL are broken. What have I done.");
+            igdJbl = false;
+            igdPhone = false;
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("jbl").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPhone && igdJbl && !RaycastPointNClick.me.brokenJBL && !RaycastPointNClick.me.brokenPhone){
             myText.text = ("music playing");
@@ -141,22 +188,24 @@ public class CombineManagerScript : MonoBehaviour
             RaycastPointNClick.me.onJBL = true;
             igdJbl = false;
             igdPhone = false;
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("jbl").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPhone && igdJbl && RaycastPointNClick.me.brokenJBL && !RaycastPointNClick.me.brokenPhone){
             myText.text = ("The JBL is still broken.");
             igdJbl = false;
             igdPhone = false;
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("jbl").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPhone && igdJbl && !RaycastPointNClick.me.brokenJBL && RaycastPointNClick.me.brokenPhone){
             myText.text = ("My phone is still broken.");
             igdJbl = false;
             igdPhone = false;
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("jbl").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
-        if (igdPhone && igdJbl && RaycastPointNClick.me.brokenJBL && RaycastPointNClick.me.brokenPhone){
-            myText.text = ("Both my phone and my JBL are broken. What have I done.");
-            igdJbl = false;
-            igdPhone = false;
-        }
+        
         /////////////////////// pen
         if (igdPen && igdPaper && !RaycastPointNClick.me.wetPaper && !RaycastPointNClick.me.burntPaper){
             myText.text = ("The handout is completed");
@@ -164,42 +213,58 @@ public class CombineManagerScript : MonoBehaviour
             RaycastPointNClick.me.completedPaper = true;
             igdPaper = false;
             igdPen = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPen && igdPaper && RaycastPointNClick.me.wetPaper && !RaycastPointNClick.me.burntPaper){
             myText.text = ("The handout is wet. Maybe later.");
             igdPaper = false;
             igdPen = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPen && igdPaper && RaycastPointNClick.me.wetPaper && RaycastPointNClick.me.burntPaper){
             myText.text = ("The handout is a mess. Can't write on this mess.");
             igdPaper = false;
             igdPen = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPen && igdPaper && !RaycastPointNClick.me.wetPaper && RaycastPointNClick.me.burntPaper){
             myText.text = ("The handout is burnt. Can't write on this thing.");
             igdPaper = false;
             igdPen = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPen && igdPaper && RaycastPointNClick.me.completedPaper){
             myText.text = ("The handout is already completed.");
             igdPaper = false;
             igdPen = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPen && igdCig){
             myText.text = ("i can't do that with pen and cigarette");
             igdPen = false;
             igdCig = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdPen && igdJbl){
             myText.text = ("i can't do that with pen and jbl");
             igdPen = false;
             igdJbl = false;
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("jbl").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         //////////////////////// seven star
         if (igdCig && igdJbl){
             myText.text = ("i can't do that with cigarette and jbl");
             igdCig = false;
             igdJbl = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("jbl").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdCig && igdPaper && !RaycastPointNClick.me.wetPaper && !RaycastPointNClick.me.burntPaper){
             myText.text = ("the handout is now burnt");
@@ -207,21 +272,29 @@ public class CombineManagerScript : MonoBehaviour
             GameManagerScript.me.combinationNum ++;
             igdCig = false;
             igdPaper = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdCig && igdPaper && RaycastPointNClick.me.wetPaper && !RaycastPointNClick.me.burntPaper){
             myText.text = ("The handout is wet. Can't burn it.");
             igdCig = false;
             igdPaper = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdCig && igdPaper && RaycastPointNClick.me.wetPaper && RaycastPointNClick.me.burntPaper){
             myText.text = ("The handout is already a mess.");
             igdCig = false;
             igdPaper = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
         if (igdCig && igdPaper && !RaycastPointNClick.me.wetPaper && RaycastPointNClick.me.burntPaper){
             myText.text = ("The handout is already burnt.");
             igdCig = false;
             igdPaper = false;
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
         }
     }
 

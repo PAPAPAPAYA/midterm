@@ -29,6 +29,7 @@ public class RaycastPointNClick : MonoBehaviour
     public bool lightedCig = false;
 
     public TextMeshProUGUI myText;
+    public string textToBeDisplayed;
 
     private void Awake() {
         me = this;
@@ -36,6 +37,7 @@ public class RaycastPointNClick : MonoBehaviour
 
     void Update()
     {
+        myText.text = textToBeDisplayed;
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // STEP 1: declare a ray, use mouse's screenspace pixel coordinate
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -75,9 +77,7 @@ public class RaycastPointNClick : MonoBehaviour
                 if (rayHit.collider.gameObject.name == "jbl"){ // igdNum = 7
                     CombineManagerScript.me.PassIngredient(7);
                 }
-                // if (rayHit.collider.gameObject.name == "water boiler"){ // igdNum = 8
-                //     CombineManagerScript.me.PassIngredient(8);
-                // }
+                rayHit.collider.gameObject.GetComponent<MaterialStorer>().selected = true; // indicate if the object is selected, if true then object glows
             }
             ////////////////////////////////////////////////////////////////// screen
             if (Input.GetMouseButtonDown(0)
@@ -121,66 +121,71 @@ public class RaycastPointNClick : MonoBehaviour
             }
             ////////////////////////////////////////////////////////////////// glow
             if (rayHit.collider.gameObject.layer == 9 && !onScreen && GameManagerScript.me.unlockMode){
+                
                 rayHit.collider.GetComponent<MaterialStorer>().glowing = true;
                 if (rayHit.collider.gameObject.name == "mug"){
-                    myText.text = "A mug, bought at Ikea. There is water in it. It's a good thing to stay hydrated.";
+                    textToBeDisplayed = "A mug, bought at Ikea. There is water in it. It's a good thing to stay hydrated.";
                 }
                 if (rayHit.collider.gameObject.name == "Zippo"){
                     if (wetZippo){
-                        myText.text = "A Zippo lighter. Its cotten is wet.";
+                        textToBeDisplayed = "A Zippo lighter. Its cotten is wet.";
                     }
                     else{
-                        myText.text = "A Zippo lighter. I really like it.";
+                        textToBeDisplayed = "A Zippo lighter. I really like it.";
                     }
                 }
                 if (rayHit.collider.gameObject.name == "phone"){
                     if (brokenPhone){
-                        myText.text = "A phone. It's broken now.";
+                        textToBeDisplayed = "A phone. It's broken now.";
                     }
                     else{
-                        myText.text = "A phone. Very cheap. Has lots of issue.";
+                        textToBeDisplayed = "A phone. Very cheap. Has lots of issue.";
                     }
                 }
                 if (rayHit.collider.gameObject.name == "jbl"){
                     if (brokenJBL){
-                        myText.text = "A JBL Flip3 music player. It's broken.";
+                        textToBeDisplayed = "A JBL Flip3 music player. It's broken.";
                     }
                     else if (onJBL){
-                        myText.text = "A JBL Flip3 music player. It's playing music.";
+                        textToBeDisplayed = "A JBL Flip3 music player. It's playing music.";
                     }
                     else{
-                        myText.text = "A JBL Flip3 music player. I really like the color. Can play music if I have my phone.";
+                        textToBeDisplayed = "A JBL Flip3 music player. I really like the color. Can play music if I have my phone.";
                     }
                 }
                 if (rayHit.collider.gameObject.name == "pen"){
-                    myText.text = "An ordinary pen. Nothing special about it. Can write on paper.";
+                    textToBeDisplayed = "An ordinary pen. Nothing special about it. Can write on paper.";
                 }
                 if (rayHit.collider.gameObject.name == "paper"){
                     if (completedPaper){
-                        myText.text = "My Intermediate Game Development handout. It's finished.";
+                        textToBeDisplayed = "My Intermediate Game Development handout. It's finished.";
                     }
-                    else if (burntPaper){
-                        myText.text = "My Intermediate Game Development handout. It's burnt. One less homework to do.";
+                    else if (burntWetPaper){
+                        textToBeDisplayed = "My Intermediate Game Development handout. It's a mess. One less homework to do.";
                     }
-                    else if (wetPaper){
-                        myText.text = "My Intermediate Game Development handout. It's wet. One less homework to do.";
+                    else if (burntPaper && !wetPaper){
+                        textToBeDisplayed = "My Intermediate Game Development handout. It's burnt. One less homework to do.";
+                    }
+                    else if (wetPaper && !burntPaper){
+                        textToBeDisplayed = "My Intermediate Game Development handout. It's wet. Still need to do it later.";
                     }
                     else{
-                        myText.text = "My Intermediate Game Development handout. Not yet completed.";
+                        textToBeDisplayed = "My Intermediate Game Development handout. Not yet completed.";
                     }
                 }
                 if (rayHit.collider.gameObject.name == "seven star"){
                     if (wetCig){
-                        myText.text = "A box of cigarette of brand Seven Star. All wet.";
+                        textToBeDisplayed = "A box of cigarette of brand Seven Star. All wet.";
                     }
                     else {
-                        myText.text = "A box of cigarette of brand Seven Star. Good price.";
+                        textToBeDisplayed = "A box of cigarette of brand Seven Star. Good price.";
                     }
                 }
                 tempObjectForGlow = rayHit.collider.gameObject;
             }
             else if (rayHit.collider.gameObject.layer != 9 && tempObjectForGlow != null){
                 tempObjectForGlow.GetComponent<MaterialStorer>().glowing = false;
+                CombineManagerScript.me.combineText = "";
                 tempObjectForGlow = null;
             }
         }
