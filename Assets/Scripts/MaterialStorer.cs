@@ -7,12 +7,12 @@ public class MaterialStorer : MonoBehaviour
     public Material glow;
     public Material defaultMat;
     public bool glowing = false;
-    public bool active = false;
+    public bool isScreenFrame = false;
 
     void Update()
     {
-        if (active){
-            //print("activated");
+        if (isScreenFrame){
+            print("only active at the ending");
         }
         if (glowing){
             GetComponent<MeshRenderer>().material = glow;

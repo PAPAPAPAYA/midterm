@@ -44,13 +44,14 @@ public class GameManagerScript : MonoBehaviour
         }
         if (buttonClicked && phase == 1){ // disable confirmButton when clicked
             confirmButton1.SetActive(false);
+            waitButton.SetActive(false);
             buttonClicked = false;
             showBar = false;
             normalButton1.SetActive(true);
             combinationNum = 0;
             phase = 2;
         }
-        if (buttonClicked && phase == 2 && subPhase == 1){ // disable confirmButton when clicked
+        if (buttonClicked && phase == 2 && subPhase == 1){
             normalButton1.SetActive(false);
             buttonClicked = false;
             keyButton2.SetActive(true);
@@ -65,6 +66,7 @@ public class GameManagerScript : MonoBehaviour
         }
         if (buttonClicked && phase == 2 && subPhase == 2){ // disable confirmButton when clicked
             confirmButton2.SetActive(false);
+            waitButton.SetActive(false);
             buttonClicked = false;
             showBar = false;
             phase = 3;
@@ -96,7 +98,6 @@ public class GameManagerScript : MonoBehaviour
             else if (phase == 2){
                 confirmButton2.SetActive(true);
             }
-            waitButton.SetActive(false);
             unlockMode = false;
         }
     }

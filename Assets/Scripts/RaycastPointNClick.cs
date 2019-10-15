@@ -72,7 +72,7 @@ public class RaycastPointNClick : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
                 print( rayHit.collider.gameObject.name+" selected");
                 if (rayHit.collider.gameObject.name == "Zippo"){ // igdNum = 1
-                    CombineManagerScript.me.PassIngredient(1); // tell CombineManagerScript which ingredient is combing
+                    CombineManagerScript.me.PassIngredient(1);// tell CombineManagerScript which ingredient is combing
                 }
                 if (rayHit.collider.gameObject.name == "mug"){ // igdNum = 2
                     CombineManagerScript.me.PassIngredient(2);
@@ -86,15 +86,15 @@ public class RaycastPointNClick : MonoBehaviour
                 if (rayHit.collider.gameObject.name == "paper"){ // igdNum = 5
                     CombineManagerScript.me.PassIngredient(5);
                 }
-                if (rayHit.collider.gameObject.name == "jbl"){ // igdNum = 6
+                if (rayHit.collider.gameObject.name == "seven star"){ // igdNum = 6
                     CombineManagerScript.me.PassIngredient(6);
                 }
-                if (rayHit.collider.gameObject.name == "water boiler"){ // igdNum = 7
+                if (rayHit.collider.gameObject.name == "jbl"){ // igdNum = 7
                     CombineManagerScript.me.PassIngredient(7);
                 }
-                if (rayHit.collider.gameObject.name == "seven star"){ // igdNum = 8
-                    CombineManagerScript.me.PassIngredient(8);
-                }
+                // if (rayHit.collider.gameObject.name == "water boiler"){ // igdNum = 8
+                //     CombineManagerScript.me.PassIngredient(8);
+                // }
             }
             ////////////////////////////////////////////////////////////////// screen
             if (Input.GetMouseButtonDown(0)
@@ -137,8 +137,7 @@ public class RaycastPointNClick : MonoBehaviour
                 GameManagerScript.me.buttonClicked = true;
             }
             ////////////////////////////////////////////////////////////////// glow
-            if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen && (rayHit.collider.gameObject.GetComponent<MaterialStorer>().active
-                || GameManagerScript.me.unlockMode)){
+            if (rayHit.collider.gameObject.layer == 9 && !onObject && !onScreen && GameManagerScript.me.unlockMode){
                 //print("glow");
                 rayHit.collider.GetComponent<MaterialStorer>().glowing = true;
                 tempObjectForGlow = rayHit.collider.gameObject;
