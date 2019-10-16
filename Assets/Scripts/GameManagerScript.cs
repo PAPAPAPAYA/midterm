@@ -48,7 +48,7 @@ public class GameManagerScript : MonoBehaviour
     private void Update() {
         //////////////////////////////////////// phase 1
         if (!unlockMode && phase == 1){
-            RaycastPointNClick.me.textToBeDisplayed = "I should focus on my screen.";
+            RaycastPointNClick.me.textToBeDisplayed = "i should focus on my screen by clicking it.";
         }
         if (keyButtonClicked && phase == 1){ // unlockmode is on once the key button is clicked
             keyButton1.SetActive(false);

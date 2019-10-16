@@ -36,7 +36,6 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(horizontalAngle);
         if (!RaycastPointNClick.me.ending){
             xClampMin = xClampMinNormal;
             xClampMax = xClampMaxNormal;

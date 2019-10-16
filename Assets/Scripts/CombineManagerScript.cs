@@ -22,7 +22,6 @@ public class CombineManagerScript : MonoBehaviour
     public float throwFactor;
     public GameObject lightedCig;
     public AudioSource jblMusic;
-    private bool playMusic = false;
 
     static public CombineManagerScript me;
     private void Awake() {
@@ -222,7 +221,6 @@ public class CombineManagerScript : MonoBehaviour
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.brokenPhone = true;
             jblMusic.Pause();
-            playMusic = false;
             igdMug = false;
             igdPhone = false;
             GameObject.Find("mug").gameObject.GetComponent<MaterialStorer>().selected = false;
@@ -343,7 +341,6 @@ public class CombineManagerScript : MonoBehaviour
         if (igdPhone && igdJbl && !RaycastPointNClick.me.brokenJBL && !RaycastPointNClick.me.brokenPhone){
             combineText = ("Music playing.");
             GameManagerScript.me.combinationNum ++;
-            playMusic = true;
             //RaycastPointNClick.me.onJBL = true;
             jblMusic.Play(0);
             igdJbl = false;
