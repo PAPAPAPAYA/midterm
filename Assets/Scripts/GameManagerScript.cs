@@ -36,6 +36,7 @@ public class GameManagerScript : MonoBehaviour
     private bool showBar = false;
     private Vector3 pBTargetScale;
     private float pBFullXScale = 1;
+    public bool waitDone = false;
     
     public bool gameOver = false;
 
@@ -55,7 +56,7 @@ public class GameManagerScript : MonoBehaviour
             unlockMode = true;
             keyButtonClicked = false;
             showBar = true;
-            RaycastPointNClick.me.textToBeDisplayed = "Let me click outside the screen to see what I can do to kill some time.";
+            RaycastPointNClick.me.textToBeDisplayed = "Let me click outside the screen to see what I can do to kill some time. Try choosing two objects by clicking them.";
         }
         if (buttonClicked && phase == 1){ // disable confirmButton when clicked
             confirmButton1.SetActive(false);
@@ -108,6 +109,7 @@ public class GameManagerScript : MonoBehaviour
             subPhase = 6;
         }
         if (keyButtonClicked && phase == 3 && subPhase == 6){ // also make screen selectable
+            waitDone = false;
             keyButton3.SetActive(false);
             waitButton.SetActive(true);
             unlockMode = true;
@@ -153,7 +155,8 @@ public class GameManagerScript : MonoBehaviour
             }
             else if (phase == 2){
                 confirmButton2.SetActive(true);
-                RaycastPointNClick.me.textToBeDisplayed = "The wait is done.";
+                waitDone = true;
+                RaycastPointNClick.me.textToBeDisplayed = "The wait is done. I should get back to my screen.";
             }
             else if (phase == 3){
                 confirmButton3.SetActive(true);

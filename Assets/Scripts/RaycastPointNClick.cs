@@ -40,6 +40,8 @@ public class RaycastPointNClick : MonoBehaviour
     //////////////////////////////////////////// ending
     public bool ending = false;
     public GameObject screen;
+    public GameObject endingCameraPos;
+
     private void Awake() {
         me = this;
     }
@@ -123,7 +125,6 @@ public class RaycastPointNClick : MonoBehaviour
             //     && screenCameraReady)
             // {
             //     rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = false;
-                
             // }
 
             if (Input.GetMouseButtonDown(0)
@@ -234,18 +235,25 @@ public class RaycastPointNClick : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position,onScreenPos.transform.position,smooth);
             Quaternion target = Quaternion.Euler(screenXAngle,-90f,0f); // y is -90 because the initial angle is -90
             transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
-            if (Vector3.Distance(transform.position,onScreenPos.transform.position)<0.1f){
+            if (Vector3.Distance(transform.position,onScreenPos.transform.position)<0.002f){
                 transform.position = onScreenPos.transform.position;
                 screenCameraReady = true;
             }
         }
-        else if(!onScreen)
+        if(!onScreen && !ending)
         {
             // lerp the camera back to default pos
             transform.position = Vector3.Lerp(transform.position, defaultPos.transform.position,smooth);
             Quaternion target = Quaternion.Euler(defaultXAngle,-90f,0f); // y is -90 because the initial angle is -90
             transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
             screenCameraReady = false;
+        }
+
+        // if in the ending change the camera angle so the player can see the screen
+        if (ending && !onScreen){
+            transform.position = Vector3.Lerp(transform.position,endingCameraPos.transform.position,smooth);
+            Quaternion target = Quaternion.Euler(12.384f, -90f, 0f); // y is -90 because the initial angle is -90
+            transform.rotation = Quaternion.Slerp(transform.rotation,target,smooth);
         }
     }
 }

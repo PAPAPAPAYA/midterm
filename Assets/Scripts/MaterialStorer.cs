@@ -11,6 +11,9 @@ public class MaterialStorer : MonoBehaviour
     public bool screenCanBeSelected = false;
     public bool selected = false;
 
+    public Material burntMat;
+    public Material burnMatGlow;
+
     void Update()
     {
         if (selected && !isScreenFrame){
