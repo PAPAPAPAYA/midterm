@@ -37,15 +37,36 @@ public class CombineManagerScript : MonoBehaviour
     ///////////////////////////////////////////////////////////////////// do the combination
     private void Update() {
         
-        // if (playMusic){
-        //     playMusic = false;
-        //     jblMusic.Play(0);
-        // }
 
         if (combineText.Length > 4 && !GameManagerScript.me.gameOver && !GameManagerScript.me.waitDone){
             RaycastPointNClick.me.textToBeDisplayed = combineText;
         }
         
+        if (!igdScreen){
+            GameObject.Find("ScreenFrame").gameObject.GetComponent<MaterialStorer>().selected = false;
+        }
+        if (!igdMug){
+            GameObject.Find("mug").gameObject.GetComponent<MaterialStorer>().selected = false;
+        }
+        if (!igdZippo){
+            GameObject.Find("Zippo").gameObject.GetComponent<MaterialStorer>().selected = false;
+        }
+        if (!igdPaper){
+            GameObject.Find("paper").gameObject.GetComponent<MaterialStorer>().selected = false;
+        }
+        if (!igdPen){
+            GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
+        }
+        if (!igdCig){
+            GameObject.Find("seven star").gameObject.GetComponent<MaterialStorer>().selected = false;
+        }
+        if (!igdPhone){
+            GameObject.Find("phone").gameObject.GetComponent<MaterialStorer>().selected = false;
+        }
+        if (!igdJbl){
+            GameObject.Find("jbl").gameObject.GetComponent<MaterialStorer>().selected = false;
+        }
+
 
         /////////////////////////// screen
         if (igdScreen && igdMug){

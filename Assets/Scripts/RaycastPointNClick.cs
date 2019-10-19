@@ -67,32 +67,94 @@ public class RaycastPointNClick : MonoBehaviour
             //////////////////////////////////////////////////////////////////// item select
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 9 && GameManagerScript.me.unlockMode){
                 if (rayHit.collider.gameObject.name == "Zippo"){ // igdNum = 1
-                    CombineManagerScript.me.PassIngredient(1);// tell CombineManagerScript which ingredient is combing
+                    if (!CombineManagerScript.me.igdZippo){
+                        CombineManagerScript.me.PassIngredient(1);// tell CombineManagerScript which ingredient is combining
+                    }
+                    else if (CombineManagerScript.me.igdZippo){
+                        CombineManagerScript.me.igdZippo = false;
+                    }
                 }
-                if (rayHit.collider.gameObject.name == "mug"){ // igdNum = 2
-                    CombineManagerScript.me.PassIngredient(2);
+                if (rayHit.collider.gameObject.name == "mug"){
+                    if (!CombineManagerScript.me.igdMug){
+                        CombineManagerScript.me.PassIngredient(2);
+                    } // igdNum = 2
+                    else if (CombineManagerScript.me.igdMug){
+                        CombineManagerScript.me.igdMug = false;
+                    }
                 }
-                if (rayHit.collider.gameObject.name == "phone"){ // igdNum = 3
-                    CombineManagerScript.me.PassIngredient(3);
+                if (rayHit.collider.gameObject.name == "phone"){
+                    if (!CombineManagerScript.me.igdPhone){
+                        CombineManagerScript.me.PassIngredient(3);
+                    } // igdNum = 3
+                    else if (CombineManagerScript.me.igdPhone){
+                        CombineManagerScript.me.igdPhone = false;
+                    }
                 }
-                if (rayHit.collider.gameObject.name == "pen"){ // igdNum = 4
-                    CombineManagerScript.me.PassIngredient(4);
+                if (rayHit.collider.gameObject.name == "pen"){
+                    if (!CombineManagerScript.me.igdPen){
+                        CombineManagerScript.me.PassIngredient(4);
+                    } // igdNum = 4
+                    else if (CombineManagerScript.me.igdPen){
+                        CombineManagerScript.me.igdPen = false;
+                    }
                 }
-                if (rayHit.collider.gameObject.name == "paper"){ // igdNum = 5
-                    CombineManagerScript.me.PassIngredient(5);
+                if (rayHit.collider.gameObject.name == "paper"){
+                    if (!CombineManagerScript.me.igdPaper){
+                        CombineManagerScript.me.PassIngredient(5);
+                    } // igdNum = 5
+                    else if (CombineManagerScript.me.igdPaper){
+                        CombineManagerScript.me.igdPaper = false;
+                    }
                 }
-                if (rayHit.collider.gameObject.name == "seven star"){ // igdNum = 6
-                    CombineManagerScript.me.PassIngredient(6);
+                if (rayHit.collider.gameObject.name == "seven star"){
+                    if (!CombineManagerScript.me.igdCig){
+                        CombineManagerScript.me.PassIngredient(6);
+                    } // igdNum = 6
+                    else if (CombineManagerScript.me.igdCig){
+                        CombineManagerScript.me.igdCig = false;
+                    }
                 }
-                if (rayHit.collider.gameObject.name == "jbl"){ // igdNum = 7
-                    CombineManagerScript.me.PassIngredient(7);
+                if (rayHit.collider.gameObject.name == "jbl"){
+                    if (!CombineManagerScript.me.igdJbl){
+                        CombineManagerScript.me.PassIngredient(7);
+                    } // igdNum = 7
+                    else if (CombineManagerScript.me.igdJbl){
+                        CombineManagerScript.me.igdJbl = false;
+                    }
                 }
+
+                // else if (rayHit.collider.gameObject.name == "Zippo" && CombineManagerScript.me.igdZippo){ // igdNum = 1
+                //     CombineManagerScript.me.igdZippo = false;// tell CombineManagerScript to unselect
+                // }
+                // else if (rayHit.collider.gameObject.name == "mug" && CombineManagerScript.me.igdMug){ // igdNum = 2
+                //     CombineManagerScript.me.igdMug = false;
+                // }
+                // else if (rayHit.collider.gameObject.name == "phone" && CombineManagerScript.me.igdPhone){ // igdNum = 3
+                //     CombineManagerScript.me.igdPhone = false;
+                // }
+                // else if (rayHit.collider.gameObject.name == "pen" && CombineManagerScript.me.igdPen){ // igdNum = 4
+                //     CombineManagerScript.me.igdPen = false;
+                // }
+                // else if (rayHit.collider.gameObject.name == "paper" && CombineManagerScript.me.igdPaper){ // igdNum = 5
+                //     CombineManagerScript.me.igdPaper = false;
+                // }
+                // else if (rayHit.collider.gameObject.name == "seven star" && CombineManagerScript.me.igdCig){ // igdNum = 6
+                //     CombineManagerScript.me.igdCig = false;
+                // }
+                // else if (rayHit.collider.gameObject.name == "jbl" && CombineManagerScript.me.igdJbl){ // igdNum = 7
+                //     CombineManagerScript.me.igdJbl = false;
+                // }
                 rayHit.collider.gameObject.GetComponent<MaterialStorer>().selected = true; // indicate if the object is selected, if true then object glows
             }
             if (Input.GetMouseButtonDown(0) && rayHit.collider.gameObject.layer == 8 && GameManagerScript.me.unlockMode && ending){
-                //print( rayHit.collider.gameObject.name+" selected");
-                CombineManagerScript.me.PassIngredient(8);
-                rayHit.collider.gameObject.GetComponent<MaterialStorer>().selected = true;
+                if (!CombineManagerScript.me.igdScreen){
+                    CombineManagerScript.me.PassIngredient(8); // if selected screen
+                    rayHit.collider.gameObject.GetComponent<MaterialStorer>().selected = true;
+                }
+                else{
+                    CombineManagerScript.me.igdScreen = false;
+                }
+                
             }
             ////////////////////////////////////////////////////////////////// screen
             if (Input.GetMouseButtonDown(0)
@@ -113,19 +175,11 @@ public class RaycastPointNClick : MonoBehaviour
             /////////////////////////////////////////////////////////////// button
             if (Input.GetMouseButtonDown(0)
                 && rayHit.collider.gameObject.layer == 11 // layer 11 is keyButtons, these buttons can enable unlockMode for player to combine
-                //&& !rayHit.collider.gameObject.GetComponent<ButtonScript>().Down
                 && onScreen
                 && screenCameraReady)
             {
                 GameManagerScript.me.keyButtonClicked = true; // indicate if the key button is clicked
-                //rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = true;
             }
-            // if (Input.GetMouseButtonUp(0)
-            //     && rayHit.collider.gameObject.GetComponent<ButtonScript>() != null
-            //     && screenCameraReady)
-            // {
-            //     rayHit.collider.gameObject.GetComponent<ButtonScript>().Down = false;
-            // }
 
             if (Input.GetMouseButtonDown(0)
                 && rayHit.collider.gameObject.layer == 10 // layer 10 is normal buttons, only disappear once clicked
@@ -136,13 +190,11 @@ public class RaycastPointNClick : MonoBehaviour
             }
             ////////////////////////////////////////////////////////////////// glow
             if (rayHit.collider.gameObject.layer == 8 && !onScreen && GameManagerScript.me.unlockMode && ending){
-                //print(rayHit.collider.GetComponent<MaterialStorer>().glowing);
                 rayHit.collider.GetComponent<MaterialStorer>().glowing = true;
                 textToBeDisplayed = "A computer. Source of pain.";
                 tempObjectForGlow = rayHit.collider.gameObject;
             }
             else if (rayHit.collider.gameObject.layer != 8 && tempObjectForGlow != null && rayHit.collider.gameObject.layer != 9){
-                //print("don't glow");
                 tempObjectForGlow.GetComponent<MaterialStorer>().glowing = false;
                 CombineManagerScript.me.combineText = "";
                 tempObjectForGlow = null;
