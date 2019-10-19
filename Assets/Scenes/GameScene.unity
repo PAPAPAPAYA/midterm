@@ -2921,8 +2921,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: i should focus on my screen by clicking it.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 23f7669dee1dd6c468b1ccd78fb6c48a, type: 2}
-  m_sharedMaterial: {fileID: -5131785866905973800, guid: 23f7669dee1dd6c468b1ccd78fb6c48a,
+  m_fontAsset: {fileID: 11400000, guid: 90d1b58545fb45d4f8ae6db2db10c3c7, type: 2}
+  m_sharedMaterial: {fileID: 2596586070746100525, guid: 90d1b58545fb45d4f8ae6db2db10c3c7,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
