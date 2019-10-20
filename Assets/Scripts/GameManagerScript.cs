@@ -36,7 +36,7 @@ public class GameManagerScript : MonoBehaviour
     public float barSmooth = 0;
     private bool showBar = false;
     private Vector3 pBTargetScale;
-    private float pBFullXScale = 1;
+    private float pBFullXScale = 0.252863f;
     public bool waitDone = false;
     
     public bool gameOver = false;
