@@ -22,6 +22,10 @@ public class GameManagerScript : MonoBehaviour
     public bool unlockMode = false;
     public int phase = 1;
     public int subPhase = 1;
+
+    [Header("Screen Management")]
+    public GameObject confirmScreen1;
+    public GameObject endScreen;
     
 
     [Header("for progress bar")]
@@ -47,9 +51,10 @@ public class GameManagerScript : MonoBehaviour
     }
 
     private void Update() {
+        print(phase);
         //////////////////////////////////////// phase 1
         if (!unlockMode && phase == 1){
-            RaycastPointNClick.me.textToBeDisplayed = "i should focus on my screen by clicking it.";
+            RaycastPointNClick.me.textToBeDisplayed = "i should build my project by clicking it.";
         }
         if (keyButtonClicked && phase == 1){ // unlockmode is on once the key button is clicked
             keyButton1.SetActive(false);
@@ -57,77 +62,67 @@ public class GameManagerScript : MonoBehaviour
             unlockMode = true;
             keyButtonClicked = false;
             showBar = true;
-            RaycastPointNClick.me.textToBeDisplayed = "Let me click outside the screen to see what I can do to kill some time. Try choosing two objects by clicking them.";
+            RaycastPointNClick.me.textToBeDisplayed = "Let me click outside the screen to see what I can do to kill some time. I can try choosing two objects by clicking them.";
         }
         if (buttonClicked && phase == 1){ // disable confirmButton when clicked
             confirmButton1.SetActive(false);
+            confirmScreen1.SetActive(false);
             waitButton.SetActive(false);
             buttonClicked = false;
             showBar = false;
-            normalButton1.SetActive(true);
             combinationNum = 0;
             phase = 2;
+            keyButton1.SetActive(true);
+            //print("keyButton set active");
         }
         //////////////////////////////////////// phase 2
-        if (buttonClicked && phase == 2 && subPhase == 1){
-            normalButton1.SetActive(false);
-            buttonClicked = false;
-            keyButton2.SetActive(true);
-            subPhase = 2;
-        }
-        if (keyButtonClicked && phase == 2 && subPhase ==2){
-            keyButton2.SetActive(false);
+        if (keyButtonClicked && phase == 2){ // unlockmode is on once the key button is clicked
+            keyButton1.SetActive(false);
             waitButton.SetActive(true);
             unlockMode = true;
             keyButtonClicked = false;
             showBar = true;
-            RaycastPointNClick.me.textToBeDisplayed = "Let me kill more time.";
-            subPhase = 3;
+            RaycastPointNClick.me.textToBeDisplayed = "Okay, let me kill more time.";
         }
-        if (buttonClicked && phase == 2 && subPhase == 3){ // disable confirmButton when clicked
-            
+        if (buttonClicked && phase == 2){ // disable confirmButton when clicked
+            confirmButton1.SetActive(false);
+            confirmScreen1.SetActive(false);
             waitButton.SetActive(false);
+            buttonClicked = false;
             showBar = false;
             combinationNum = 0;
-            keyButtonClicked = false;
-            subPhase = 4;
-            normalButton2.SetActive(true);
-            confirmButton2.SetActive(false);
-            buttonClicked = false;
             phase = 3;
+            keyButton1.SetActive(true);
         }
         ///////////////////////////////////// phase 3 (ending)
-        if (buttonClicked && phase == 3 && subPhase == 4){
-            normalButton2.SetActive(false);
-            buttonClicked = false;
-            normalButton3.SetActive(true);
-            subPhase = 5;
-        }
-        if (buttonClicked && phase == 3 && subPhase == 5){ 
-            normalButton3.SetActive(false);
-            buttonClicked = false;
-            keyButton3.SetActive(true);
-            subPhase = 6;
-        }
-        if (keyButtonClicked && phase == 3 && subPhase == 6){ // also make screen selectable
-            waitDone = false;
-            keyButton3.SetActive(false);
+        if (keyButtonClicked && phase == 3){
+            keyButton1.SetActive(false);
             waitButton.SetActive(true);
+            endScreen.SetActive(true);
             unlockMode = true;
             keyButtonClicked = false;
             showBar = true;
             RaycastPointNClick.me.textToBeDisplayed = "I can't take this anymore.";
             RaycastPointNClick.me.ending = true;
-            subPhase = 7;
         }
-        if (buttonClicked && phase == 3 && subPhase == 7){ // disable confirmButton when clicked
-            confirmButton3.SetActive(false);
-            waitButton.SetActive(false);
-            buttonClicked = false;
-            showBar = false;
-            subPhase = 999;
-            print("done");
-        }
+        // if (keyButtonClicked && phase == 3 && subPhase == 6){ // also make screen selectable
+        //     waitDone = false;
+        //     keyButton3.SetActive(false);
+        //     waitButton.SetActive(true);
+        //     unlockMode = true;
+        //     keyButtonClicked = false;
+        //     showBar = true;
+        //     RaycastPointNClick.me.textToBeDisplayed = "I can't take this anymore.";
+        //     subPhase = 7;
+        // }
+        // if (buttonClicked && phase == 3 && subPhase == 7){ // disable confirmButton when clicked
+        //     confirmButton3.SetActive(false);
+        //     waitButton.SetActive(false);
+        //     buttonClicked = false;
+        //     showBar = false;
+        //     subPhase = 999;
+        //     print("done");
+        // }
         
 
         //////////////////////////////////////////////////////////// progress bar
@@ -147,15 +142,17 @@ public class GameManagerScript : MonoBehaviour
             pBTargetScale = new Vector3 ((combinationNum/combinationRequirement3) * pBFullXScale, progressBar.transform.localScale.y, progressBar.transform.localScale.z);
         }
         progressBar.transform.localScale = Vector3.Lerp(progressBar.transform.localScale, pBTargetScale, barSmooth); // progress bar increase for an amount based on the combinations made and combination required
-        if (pBFullXScale - progressBar.transform.localScale.x < 0.1f && unlockMode){ // when progress bar is increased enough show confirmButton, disable unlockMode
+        if (pBFullXScale - progressBar.transform.localScale.x < 0.005f && unlockMode){ // when progress bar is increased enough show confirmButton, disable unlockMode
             progressBar.transform.localScale = pBTargetScale;
             
             if (phase == 1){
                 confirmButton1.SetActive(true);
+                confirmScreen1.SetActive(true);
                 RaycastPointNClick.me.textToBeDisplayed = "The wait is done.";
             }
             else if (phase == 2){
-                confirmButton2.SetActive(true);
+                confirmButton1.SetActive(true);
+                confirmScreen1.SetActive(true);
                 waitDone = true;
                 RaycastPointNClick.me.textToBeDisplayed = "The wait is done. I should get back to my screen.";
             }

@@ -133,8 +133,6 @@ public class CombineManagerScript : MonoBehaviour
             ThrowThings("jbl");
         }
 
-
-
         ///////////////////// zippo
         if (igdZippo && igdMug){
             combineText = "The cotton is now wet. Can't use the Zippo for now.";
@@ -362,7 +360,7 @@ public class CombineManagerScript : MonoBehaviour
         if (igdPhone && igdJbl && !RaycastPointNClick.me.brokenJBL && !RaycastPointNClick.me.brokenPhone){
             combineText = ("Music playing.");
             GameManagerScript.me.combinationNum ++;
-            //RaycastPointNClick.me.onJBL = true;
+            RaycastPointNClick.me.onJBL = true;
             jblMusic.Play(0);
             igdJbl = false;
             igdPhone = false;
