@@ -6,6 +6,17 @@ using TMPro;
 
 public class CombineManagerScript : MonoBehaviour
 {
+    [Header("SOUNDS")]
+    public AudioSource burn;
+    public AudioSource zippo;
+    public AudioSource water;
+    public AudioSource elcBroken;
+    public AudioSource screenCrash;
+    public AudioSource mouseClick;
+    public AudioSource write;
+    public AudioSource screenThud;
+
+    [Header("COMBINATIONS")]
     public bool igdZippo = false;
     public bool igdMug = false;
     public bool igdPhone = false;
@@ -71,6 +82,8 @@ public class CombineManagerScript : MonoBehaviour
         /////////////////////////// screen
         if (igdScreen && igdMug){
             combineText = "The screen is craked. I am feeling happier.";
+            screenCrash.pitch = Random.Range(.925f, 1.075f);
+            screenCrash.PlayOneShot(screenCrash.clip);
             GameManagerScript.me.combinationNum ++;
             igdScreen = false;
             igdMug = false;
@@ -80,6 +93,8 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdScreen && igdPhone){
             combineText = "The screen is craked. I am feeling happier.";
+            screenThud.pitch = Random.Range(.5f, 1.5f);
+            screenThud.PlayOneShot(screenThud.clip);
             GameManagerScript.me.combinationNum ++;
             igdScreen = false;
             igdPhone = false;
@@ -89,6 +104,8 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdScreen && igdPaper){
             combineText = "The screen is craked. I am feeling happier.";
+            // screenThud.pitch = Random.Range(.925f, 1.075f);
+            // screenThud.PlayOneShot(screenThud.clip);
             GameManagerScript.me.combinationNum ++;
             igdScreen = false;
             igdPaper = false;
@@ -98,6 +115,8 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdScreen && igdZippo){
             combineText = "The screen is craked. I am feeling happier.";
+            screenThud.pitch = Random.Range(.5f, 1.5f);
+            screenThud.PlayOneShot(screenThud.clip);
             GameManagerScript.me.combinationNum ++;
             igdScreen = false;
             igdZippo = false;
@@ -107,6 +126,8 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdScreen && igdPen){
             combineText = "The screen is craked. I am feeling happier.";
+            screenThud.pitch = Random.Range(.5f, 1.5f);
+            screenThud.PlayOneShot(screenThud.clip);
             GameManagerScript.me.combinationNum ++;
             igdScreen = false;
             igdPen = false;
@@ -116,6 +137,8 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdScreen && igdCig){
             combineText = "The screen is craked. I am feeling happier.";
+            screenThud.pitch = Random.Range(.5f, 1.5f);
+            screenThud.PlayOneShot(screenThud.clip);
             GameManagerScript.me.combinationNum ++;
             igdScreen = false;
             igdCig = false;
@@ -125,6 +148,8 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdScreen && igdJbl){
             combineText = "The screen is craked. I am feeling happier.";
+            screenThud.pitch = Random.Range(.5f, 1.5f);
+            screenThud.PlayOneShot(screenThud.clip);
             GameManagerScript.me.combinationNum ++;
             igdScreen = false;
             igdJbl = false;
@@ -152,6 +177,8 @@ public class CombineManagerScript : MonoBehaviour
         } 
         if (igdZippo && igdPaper && !RaycastPointNClick.me.wetPaper && !RaycastPointNClick.me.wetZippo && !RaycastPointNClick.me.burntPaper){
             combineText = ("The handout is burnt.");
+            zippo.PlayOneShot(zippo.clip);
+            burn.PlayDelayed(zippo.clip.length);
             GameObject.Find("paper").GetComponent<MaterialStorer>().defaultMat = GameObject.Find("paper").GetComponent<MaterialStorer>().burntMat;
             GameObject.Find("paper").GetComponent<MaterialStorer>().glow = GameObject.Find("paper").GetComponent<MaterialStorer>().burnMatGlow;
             GameManagerScript.me.combinationNum ++;
@@ -205,6 +232,7 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdZippo && igdCig && !RaycastPointNClick.me.wetCig){
             combineText = ("The cigarette is lighted.");
+            zippo.PlayOneShot(zippo.clip);
             lightedCig.gameObject.SetActive(true);
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.lightedCig = true;
@@ -237,6 +265,8 @@ public class CombineManagerScript : MonoBehaviour
         } 
         if (igdMug && igdPhone){
             combineText = ("My phone is now broken.");
+            water.PlayOneShot(water.clip);
+            elcBroken.PlayDelayed(water.clip.length);
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.brokenPhone = true;
             jblMusic.Pause();
@@ -262,6 +292,7 @@ public class CombineManagerScript : MonoBehaviour
         }  
         if (igdMug && igdPaper && !RaycastPointNClick.me.burntPaper && !RaycastPointNClick.me.wetPaper){
             combineText = ("The handout is now wet.");
+            water.PlayOneShot(water.clip);
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.wetPaper = true;
             igdMug = false;
@@ -271,6 +302,7 @@ public class CombineManagerScript : MonoBehaviour
         } 
         if (igdMug && igdPaper && RaycastPointNClick.me.burntPaper && !RaycastPointNClick.me.burntWetPaper){
             combineText = ("The handout is now a mess.");
+            water.PlayOneShot(water.clip);
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.burntWetPaper = true;
             igdMug = false;
@@ -295,6 +327,8 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdMug && igdJbl){
             combineText = ("my JBL player is now broken.");
+            water.PlayOneShot(water.clip);
+            elcBroken.PlayDelayed(water.clip.length);
             jblMusic.Pause();
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.brokenJBL = true;
@@ -314,6 +348,7 @@ public class CombineManagerScript : MonoBehaviour
         }
         if (igdMug && igdCig){
             combineText = ("The cigarettes are all wet, can't smoke them anymore.");
+            water.PlayOneShot(water.clip);
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.wetCig = true;
             igdMug = false;
@@ -384,7 +419,8 @@ public class CombineManagerScript : MonoBehaviour
         
         /////////////////////// pen
         if (igdPen && igdPaper && !RaycastPointNClick.me.wetPaper && !RaycastPointNClick.me.burntPaper){
-           combineText = ("The handout is completed");
+            combineText = ("The handout is completed");
+            write.PlayOneShot(write.clip);
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.completedPaper = true;
             GameObject.Find("paper").GetComponent<MaterialStorer>().defaultMat = GameObject.Find("paper").GetComponent<MaterialStorer>().completedMat;

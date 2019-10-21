@@ -16,7 +16,7 @@ public class RaycastPointNClick : MonoBehaviour
     private bool screenCameraReady = false;
     public GameObject tempObjectForGlow; // for storing object that glowed
 
-    /////////// indicators of object state
+    [Header("indicators of object state")]
     public bool wetZippo = false;
     public bool wetPaper = false;
     public bool burntPaper = false;
@@ -28,7 +28,7 @@ public class RaycastPointNClick : MonoBehaviour
     public bool wetCig = false;
     public bool lightedCig = false;
 
-    ////////////////////////////////////////////// text
+    [Header("text")]
     public TextMeshProUGUI myText;
     public string textToBeDisplayed;
 
@@ -37,10 +37,13 @@ public class RaycastPointNClick : MonoBehaviour
     public string burntWetText = "";
     public string completedText = "";
 
-    //////////////////////////////////////////// ending
+    [Header("ending")]
     public bool ending = false;
     public GameObject screen;
     public GameObject endingCameraPos;
+
+    [Header("sound")]
+    public AudioSource mouseClick;
 
     private void Awake() {
         me = this;
@@ -48,7 +51,12 @@ public class RaycastPointNClick : MonoBehaviour
 
     void Update()
     {
-        myText.text = textToBeDisplayed;
+        if (CombineManagerScript.me.combineText.Length < 4){
+            myText.text = textToBeDisplayed;
+        }
+        else{
+            myText.text = CombineManagerScript.me.combineText;
+        }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // STEP 1: declare a ray, use mouse's screenspace pixel coordinate
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -179,6 +187,7 @@ public class RaycastPointNClick : MonoBehaviour
                 && screenCameraReady)
             {
                 GameManagerScript.me.keyButtonClicked = true; // indicate if the key button is clicked
+                mouseClick.PlayOneShot(mouseClick.clip);
             }
 
             if (Input.GetMouseButtonDown(0)
@@ -187,6 +196,7 @@ public class RaycastPointNClick : MonoBehaviour
                 && screenCameraReady)
             {
                 GameManagerScript.me.buttonClicked = true;
+                mouseClick.PlayOneShot(mouseClick.clip);
             }
             ////////////////////////////////////////////////////////////////// glow
             if (rayHit.collider.gameObject.layer == 8 && !onScreen && GameManagerScript.me.unlockMode && ending){

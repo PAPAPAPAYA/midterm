@@ -55,7 +55,6 @@ public class GameManagerScript : MonoBehaviour
     }
 
     private void Update() {
-        print(phase);
         //////////////////////////////////////// phase 1
         if (!unlockMode && phase == 1 && !waitDone){
             RaycastPointNClick.me.textToBeDisplayed = "I should build my project by clicking it.";
@@ -111,7 +110,7 @@ public class GameManagerScript : MonoBehaviour
             unlockMode = true;
             keyButtonClicked = false;
             showBar = false;
-            RaycastPointNClick.me.textToBeDisplayed = "I can't take this anymore.";
+            RaycastPointNClick.me.textToBeDisplayed = "I can't take this anymore. Stupid computer.";
             RaycastPointNClick.me.ending = true;
         }
         
@@ -141,13 +140,13 @@ public class GameManagerScript : MonoBehaviour
                 confirmButton1.SetActive(true);
                 confirmScreen1.SetActive(true);
                 waitDone = true;
-                RaycastPointNClick.me.textToBeDisplayed = "What the...";
+                RaycastPointNClick.me.textToBeDisplayed = "What the... Build failure!?";
             }
             else if (phase == 2){
                 confirmButton1.SetActive(true);
                 confirmScreen1.SetActive(true);
                 waitDone = true;
-                RaycastPointNClick.me.textToBeDisplayed = "WHAT THE...";
+                RaycastPointNClick.me.textToBeDisplayed = "WHAT THE... Not again.";
             }
             // else if (phase == 3){
             //     // confirmButton3.SetActive(true);
