@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -44,6 +45,9 @@ public class GameManagerScript : MonoBehaviour
     public bool waitDone = false;
     
     public bool gameOver = false;
+
+    public TextMeshPro endPercentage;
+
 
     
     private void Awake() {
@@ -97,32 +101,14 @@ public class GameManagerScript : MonoBehaviour
         ///////////////////////////////////// phase 3 (ending)
         if (keyButtonClicked && phase == 3){
             keyButton1.SetActive(false);
-            waitButton.SetActive(true);
             endScreen.SetActive(true);
+            endPercentage.gameObject.SetActive(true);
             unlockMode = true;
             keyButtonClicked = false;
-            showBar = true;
+            showBar = false;
             RaycastPointNClick.me.textToBeDisplayed = "I can't take this anymore.";
             RaycastPointNClick.me.ending = true;
         }
-        // if (keyButtonClicked && phase == 3 && subPhase == 6){ // also make screen selectable
-        //     waitDone = false;
-        //     keyButton3.SetActive(false);
-        //     waitButton.SetActive(true);
-        //     unlockMode = true;
-        //     keyButtonClicked = false;
-        //     showBar = true;
-        //     RaycastPointNClick.me.textToBeDisplayed = "I can't take this anymore.";
-        //     subPhase = 7;
-        // }
-        // if (buttonClicked && phase == 3 && subPhase == 7){ // disable confirmButton when clicked
-        //     confirmButton3.SetActive(false);
-        //     waitButton.SetActive(false);
-        //     buttonClicked = false;
-        //     showBar = false;
-        //     subPhase = 999;
-        //     print("done");
-        // }
         
 
         //////////////////////////////////////////////////////////// progress bar
@@ -138,11 +124,12 @@ public class GameManagerScript : MonoBehaviour
         else if (phase == 2){
             pBTargetScale = new Vector3 ((combinationNum/combinationRequirement2) * pBFullXScale, progressBar.transform.localScale.y, progressBar.transform.localScale.z);
         }
-        else if (phase == 3){
-            pBTargetScale = new Vector3 ((combinationNum/combinationRequirement3) * pBFullXScale, progressBar.transform.localScale.y, progressBar.transform.localScale.z);
+        else if (phase == 3){ // instead of using the progress bar, use endPercentage(
+            endPercentage.text =  Mathf.RoundToInt(combinationNum/combinationRequirement3 * 100).ToString();
+            //pBTargetScale = new Vector3 ((combinationNum/combinationRequirement3) * pBFullXScale, progressBar.transform.localScale.y, progressBar.transform.localScale.z);
         }
         progressBar.transform.localScale = Vector3.Lerp(progressBar.transform.localScale, pBTargetScale, barSmooth); // progress bar increase for an amount based on the combinations made and combination required
-        if (pBFullXScale - progressBar.transform.localScale.x < 0.005f && unlockMode){ // when progress bar is increased enough show confirmButton, disable unlockMode
+        if (pBFullXScale - progressBar.transform.localScale.x < 0.005f && unlockMode && phase != 3){ // when progress bar is increased enough show confirmButton, disable unlockMode
             progressBar.transform.localScale = pBTargetScale;
             
             if (phase == 1){
@@ -156,13 +143,19 @@ public class GameManagerScript : MonoBehaviour
                 waitDone = true;
                 RaycastPointNClick.me.textToBeDisplayed = "The wait is done. I should get back to my screen.";
             }
-            else if (phase == 3){
-                confirmButton3.SetActive(true);
-                gameOver = true;
-                RaycastPointNClick.me.textToBeDisplayed = "Good day. Game over.";
-                SceneManager.LoadScene("EndScene");
-            }
+            // else if (phase == 3){
+            //     // confirmButton3.SetActive(true);
+            //     // gameOver = true;
+            //     // RaycastPointNClick.me.textToBeDisplayed = "Good day. Game over.";
+            //     // SceneManager.LoadScene("EndScene");
+            // }
             unlockMode = false;
+        }
+        if ( Mathf.RoundToInt(combinationNum/combinationRequirement3 * 100) > 99 && phase == 3){
+            endPercentage.text = "100";
+            gameOver = true;
+            RaycastPointNClick.me.textToBeDisplayed = "Good day. Game over.";
+            SceneManager.LoadScene("EndScene");
         }
     }
 }

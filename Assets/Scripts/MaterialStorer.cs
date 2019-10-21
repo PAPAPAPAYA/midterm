@@ -13,6 +13,8 @@ public class MaterialStorer : MonoBehaviour
 
     public Material burntMat;
     public Material burnMatGlow;
+    public Material completedMat;
+    public Material completedMatGlow;
 
     void Update()
     {

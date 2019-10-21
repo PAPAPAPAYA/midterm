@@ -387,6 +387,8 @@ public class CombineManagerScript : MonoBehaviour
            combineText = ("The handout is completed");
             GameManagerScript.me.combinationNum ++;
             RaycastPointNClick.me.completedPaper = true;
+            GameObject.Find("paper").GetComponent<MaterialStorer>().defaultMat = GameObject.Find("paper").GetComponent<MaterialStorer>().completedMat;
+            GameObject.Find("paper").GetComponent<MaterialStorer>().glow = GameObject.Find("paper").GetComponent<MaterialStorer>().completedMatGlow;
             igdPaper = false;
             igdPen = false;
             GameObject.Find("pen").gameObject.GetComponent<MaterialStorer>().selected = false;
