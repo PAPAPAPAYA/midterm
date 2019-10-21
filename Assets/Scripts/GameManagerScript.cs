@@ -41,7 +41,7 @@ public class GameManagerScript : MonoBehaviour
     public float barSmooth = 0;
     private bool showBar = false;
     private Vector3 pBTargetScale;
-    private float pBFullXScale = 0.252863f;
+    private float pBFullXScale = 0.2482126f;
     public bool waitDone = false;
     
     public bool gameOver = false;
@@ -57,8 +57,11 @@ public class GameManagerScript : MonoBehaviour
     private void Update() {
         print(phase);
         //////////////////////////////////////// phase 1
-        if (!unlockMode && phase == 1){
-            RaycastPointNClick.me.textToBeDisplayed = "i should build my project by clicking it.";
+        if (!unlockMode && phase == 1 && !waitDone){
+            RaycastPointNClick.me.textToBeDisplayed = "I should build my project by clicking it.";
+        }
+        if (!unlockMode && phase == 2 && !waitDone){
+            RaycastPointNClick.me.textToBeDisplayed = "Okey, let's try to build again.";
         }
         if (keyButtonClicked && phase == 1){ // unlockmode is on once the key button is clicked
             keyButton1.SetActive(false);
@@ -69,6 +72,7 @@ public class GameManagerScript : MonoBehaviour
             RaycastPointNClick.me.textToBeDisplayed = "Let me click outside the screen to see what I can do to kill some time. I can try choosing two objects by clicking them.";
         }
         if (buttonClicked && phase == 1){ // disable confirmButton when clicked
+            RaycastPointNClick.me.textToBeDisplayed = "Okey, let's try to build again.";
             confirmButton1.SetActive(false);
             confirmScreen1.SetActive(false);
             waitButton.SetActive(false);
@@ -86,9 +90,10 @@ public class GameManagerScript : MonoBehaviour
             unlockMode = true;
             keyButtonClicked = false;
             showBar = true;
-            RaycastPointNClick.me.textToBeDisplayed = "Okay, let me kill more time.";
+            RaycastPointNClick.me.textToBeDisplayed = "Gotta kill more time.";
         }
         if (buttonClicked && phase == 2){ // disable confirmButton when clicked
+            RaycastPointNClick.me.textToBeDisplayed = "Well, have to do it again.";
             confirmButton1.SetActive(false);
             confirmScreen1.SetActive(false);
             waitButton.SetActive(false);
@@ -135,13 +140,14 @@ public class GameManagerScript : MonoBehaviour
             if (phase == 1){
                 confirmButton1.SetActive(true);
                 confirmScreen1.SetActive(true);
-                RaycastPointNClick.me.textToBeDisplayed = "The wait is done.";
+                waitDone = true;
+                RaycastPointNClick.me.textToBeDisplayed = "What the...";
             }
             else if (phase == 2){
                 confirmButton1.SetActive(true);
                 confirmScreen1.SetActive(true);
                 waitDone = true;
-                RaycastPointNClick.me.textToBeDisplayed = "The wait is done. I should get back to my screen.";
+                RaycastPointNClick.me.textToBeDisplayed = "WHAT THE...";
             }
             // else if (phase == 3){
             //     // confirmButton3.SetActive(true);
