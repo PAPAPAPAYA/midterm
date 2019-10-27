@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="461075__15gkovacovajulie__1-10-burning-paper_data" version="1.3.0" audacityversion="2.3.2" sel0="0.0000000000" sel1="2.5365729443" vpos="0" h="0.0000000000" zoom="36.6636410788" rate="48000.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags>
+		<tag name="Software" value="Lavf58.20.100"/>
+	</tags>
+	<wavetrack name="461075__15gkovacovajulie__1-10-burning-paper" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="48000" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="121755">
+				<waveblock start="0">
+					<simpleblockfile filename="e0808b63.au" len="121755" min="-0.250916" max="0.242676" rms="0.005721"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="461075__15gkovacovajulie__1-10-burning-paper" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="48000" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="121755">
+				<waveblock start="0">
+					<simpleblockfile filename="e08080af.au" len="121755" min="-0.210602" max="0.210205" rms="0.005681"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>
